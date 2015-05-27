@@ -39,6 +39,12 @@
     <Folder Include="Implementation\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\Collections\INotifyListChanged.cs" />
+    <Compile Include="Abstract\Collections\INotifySetChanged.cs" />
+    <Compile Include="Abstract\Collections\IObservableList.cs" />
+    <Compile Include="Abstract\Collections\IObservableReadOnlyList.cs" />
+    <Compile Include="Abstract\Collections\IObservableReadOnlySet.cs" />
+    <Compile Include="Abstract\Collections\IObservableSet.cs" />
     <Compile Include="Abstract\Transactions\Arguments\IListOnClearArgs.cs" />
     <Compile Include="Abstract\Transactions\Arguments\IListOnEmptyArgs.cs" />
     <Compile Include="Abstract\Transactions\Arguments\IListOnInsertArgs.cs" />
@@ -52,6 +58,17 @@
     <Compile Include="Abstract\Transactions\IUpdateListQuery.cs" />
     <Compile Include="Abstract\Transactions\IUpdateSetQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\packages\Rx-Core.2.2.5\lib\portable-net45+winrt45+wp8+wpa81\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\portable-net45+winrt45+wp8+wpa81\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
