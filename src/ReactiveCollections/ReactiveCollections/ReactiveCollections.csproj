@@ -35,8 +35,22 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <Folder Include="Extensions\" />
+    <Folder Include="Implementation\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\Transactions\Arguments\IListOnClearArgs.cs" />
+    <Compile Include="Abstract\Transactions\Arguments\IListOnEmptyArgs.cs" />
+    <Compile Include="Abstract\Transactions\Arguments\IListOnInsertArgs.cs" />
+    <Compile Include="Abstract\Transactions\Arguments\IListOnMoveArgs.cs" />
+    <Compile Include="Abstract\Transactions\Arguments\IListOnRemoveArgs.cs" />
+    <Compile Include="Abstract\Transactions\Arguments\IListOnReplaceArgs.cs" />
+    <Compile Include="Abstract\Transactions\Arguments\ISetOnClearArgs.cs" />
+    <Compile Include="Abstract\Transactions\Arguments\ISetOnEmptyArgs.cs" />
+    <Compile Include="Abstract\Transactions\Arguments\ISetOnInsertArgs.cs" />
+    <Compile Include="Abstract\Transactions\Arguments\ISetOnRemoveArgs.cs" />
+    <Compile Include="Abstract\Transactions\IUpdateListQuery.cs" />
+    <Compile Include="Abstract\Transactions\IUpdateSetQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
