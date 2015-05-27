@@ -57,7 +57,7 @@
     <Compile Include="Abstract\Transactions\IUpdateListQuery.cs" />
     <Compile Include="Abstract\Transactions\IUpdateSetQuery.cs" />
     <Compile Include="Extensions\InternalExtensions.cs" />
-    <Compile Include="Implementation\Transactions\IUpdateSetQuery.cs" />
+    <Compile Include="Implementation\Transactions\UpdateSetQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
