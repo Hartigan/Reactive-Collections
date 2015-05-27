@@ -35,8 +35,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <Folder Include="Extensions\" />
-    <Folder Include="Implementation\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\Collections\INotifyListChanged.cs" />
@@ -58,9 +56,14 @@
     <Compile Include="Abstract\Transactions\ITransactional.cs" />
     <Compile Include="Abstract\Transactions\IUpdateListQuery.cs" />
     <Compile Include="Abstract\Transactions\IUpdateSetQuery.cs" />
+    <Compile Include="Extensions\InternalExtensions.cs" />
+    <Compile Include="Implementation\Transactions\IUpdateSetQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations.PCL328">
+      <HintPath>..\packages\JetBrains.Annotations.9.1.1\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\JetBrains.Annotations.PCL328.dll</HintPath>
+    </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\portable-net45+winrt45+wp8+wpa81\System.Reactive.Core.dll</HintPath>
     </Reference>
