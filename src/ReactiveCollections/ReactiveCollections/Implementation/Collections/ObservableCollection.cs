@@ -10,26 +10,26 @@ using ReactiveCollections.Implementation.Transactions;
 
 namespace ReactiveCollections.Implementation.Collections
 {
-	public class ObservableSet<T> : IObservableSet<T>
+	public class ObservableCollection<T> : IObservableCollection<T>
 	{
 		[NotNull]
 		private readonly List<T> _set;
 
 		[NotNull]
-		private readonly Subject<IEnumerable<IUpdateSetQuery<T>>> _subject;
+		private readonly Subject<IEnumerable<IUpdateCollectionQuery<T>>> _subject;
 
 		[CanBeNull]
-		private Transaction<IUpdateSetQuery<T>, T> _transaction;
+		private Transaction<IUpdateCollectionQuery<T>, T> _transaction;
 
-		public ObservableSet()
+		public ObservableCollection()
 		{
-			_subject = new Subject<IEnumerable<IUpdateSetQuery<T>>>();
+			_subject = new Subject<IEnumerable<IUpdateCollectionQuery<T>>>();
 			_set = new List<T>();
 		}
 
-		public ObservableSet(IEnumerable<T> items)
+		public ObservableCollection(IEnumerable<T> items)
 		{
-			_subject = new Subject<IEnumerable<IUpdateSetQuery<T>>>();
+			_subject = new Subject<IEnumerable<IUpdateCollectionQuery<T>>>();
 			_set = new List<T>(items);
 		}
 
@@ -43,7 +43,7 @@ namespace ReactiveCollections.Implementation.Collections
 			return GetEnumerator();
 		}
 
-		public IObservable<IEnumerable<IUpdateSetQuery<T>>> SetChanged
+		public IObservable<IEnumerable<IUpdateCollectionQuery<T>>> CollectionChanged
 		{
 			get { return _subject; }
 		}
@@ -53,6 +53,11 @@ namespace ReactiveCollections.Implementation.Collections
 			get { return _set.Count; }
 		}
 
+		public bool IsReadOnly
+		{
+			get { return false; }
+		}
+
 		public IDisposable Transaction()
 		{
 			if (_transaction != null)
@@ -60,20 +65,25 @@ namespace ReactiveCollections.Implementation.Collections
 				throw new InvalidOperationException();
 			}
 
-			return _transaction = new Transaction<IUpdateSetQuery<T>, T>(_subject, DeleteTransaction);
+			return _transaction = new Transaction<IUpdateCollectionQuery<T>, T>(_subject, DeleteTransaction);
 		}
 
 		public void Add(T item)
 		{
-			ToTransaction(UpdateSetQuery<T>.OnInsert(item));
+			ToTransaction(UpdateCollectionQuery<T>.OnInsert(item));
 			_set.Add(item);
+		}
+
+		public void CopyTo(T[] array, int arrayIndex)
+		{
+			_set.CopyTo(array, arrayIndex);
 		}
 
 		public bool Remove(T item)
 		{
 			if (_set.Remove(item))
 			{
-				ToTransaction(UpdateSetQuery<T>.OnRemove(item));
+				ToTransaction(UpdateCollectionQuery<T>.OnRemove(item));
 				return true;
 			}
 			return false;
@@ -81,8 +91,13 @@ namespace ReactiveCollections.Implementation.Collections
 
 		public void Clear()
 		{
-			ToTransaction(UpdateSetQuery<T>.OnClear(_set.ToList()));
+			ToTransaction(UpdateCollectionQuery<T>.OnClear(_set.ToList()));
 			_set.Clear();
+		}
+
+		public bool Contains(T item)
+		{
+			return _set.Contains(item);
 		}
 
 		private void DeleteTransaction()
@@ -90,7 +105,7 @@ namespace ReactiveCollections.Implementation.Collections
 			_transaction = null;
 		}
 
-		private void ToTransaction([NotNull] IUpdateSetQuery<T> update)
+		private void ToTransaction([NotNull] IUpdateCollectionQuery<T> update)
 		{
 			if (_transaction != null)
 			{

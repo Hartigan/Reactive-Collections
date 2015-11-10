@@ -3,7 +3,7 @@ using ReactiveCollections.Abstract.Transactions.Arguments;
 
 namespace ReactiveCollections.Abstract.Transactions
 {
-	public interface IUpdateListQuery<out T> : IUpdateSetQuery<T>
+	public interface IUpdateListQuery<out T> : IUpdateCollectionQuery<T>
 	{
 		TResult Match<TResult>(
 			Func<IListOnInsertArgs<T>, TResult> onInsert,

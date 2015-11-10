@@ -1,6 +1,6 @@
 ﻿namespace ReactiveCollections.Abstract.Transactions.Arguments
 {
-	public interface IListOnEmptyArgs : ISetOnEmptyArgs
+	public interface IListOnEmptyArgs : ICollectionOnEmptyArgs
 	{
 	}
 }

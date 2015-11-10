@@ -5,9 +5,9 @@ using ReactiveCollections.Abstract.Transactions;
 
 namespace ReactiveCollections.Abstract.Collections
 {
-	public interface INotifySetChanged<out T>
+	public interface INotifyCollectionChanged<out T>
 	{
 		[NotNull]
-		IObservable<IEnumerable<IUpdateSetQuery<T>>> SetChanged { get; }
+		IObservable<IEnumerable<IUpdateCollectionQuery<T>>> CollectionChanged { get; }
 	}
 }

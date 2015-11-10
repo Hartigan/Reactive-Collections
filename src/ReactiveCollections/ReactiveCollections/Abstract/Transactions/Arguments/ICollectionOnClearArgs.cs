@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace ReactiveCollections.Abstract.Transactions.Arguments
 {
-	public interface ISetOnClearArgs<out T>
+	public interface ICollectionOnClearArgs<out T>
 	{
 		[NotNull]
 		IReadOnlyList<T> Items { get; }

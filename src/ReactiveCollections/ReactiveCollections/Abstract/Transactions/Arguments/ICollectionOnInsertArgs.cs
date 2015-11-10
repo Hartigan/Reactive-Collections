@@ -1,6 +1,6 @@
 ﻿namespace ReactiveCollections.Abstract.Transactions.Arguments
 {
-	public interface ISetOnRemoveArgs<out T>
+	public interface ICollectionOnInsertArgs<out T>
 	{
 		T Item { get; }
 	}

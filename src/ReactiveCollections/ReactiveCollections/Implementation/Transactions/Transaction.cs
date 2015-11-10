@@ -5,7 +5,7 @@ using ReactiveCollections.Abstract.Transactions;
 
 namespace ReactiveCollections.Implementation.Transactions
 {
-	internal class Transaction<T, TItem> : IDisposable where T : IUpdateSetQuery<TItem>
+	internal class Transaction<T, TItem> : IDisposable where T : IUpdateCollectionQuery<TItem>
 	{
 		[NotNull]
 		private readonly IObserver<IEnumerable<T>> _observer;

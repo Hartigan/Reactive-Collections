@@ -7,9 +7,9 @@ using ReactiveCollections.Extensions;
 
 namespace ReactiveCollections.Implementation.Transactions
 {
-	public abstract class UpdateSetQuery<T> : IUpdateSetQuery<T>
+	public abstract class UpdateCollectionQuery<T> : IUpdateCollectionQuery<T>
 	{
-		private sealed class OnClearArgs : UpdateSetQuery<T>, ISetOnClearArgs<T>
+		private sealed class OnClearArgs : UpdateCollectionQuery<T>, ICollectionOnClearArgs<T>
 		{
 			[NotNull]
 			private readonly IReadOnlyList<T> _items;
@@ -21,22 +21,22 @@ namespace ReactiveCollections.Implementation.Transactions
 			}
 
 			public override TResult Match<TResult>(
-				Func<ISetOnInsertArgs<T>, TResult> onInsert,
-				Func<ISetOnRemoveArgs<T>, TResult> onRemove,
-				Func<ISetOnReplaceArgs<T>, TResult> onReplace,
-				Func<ISetOnClearArgs<T>, TResult> onClear,
-				Func<ISetOnEmptyArgs, TResult> onEmpty)
+				Func<ICollectionOnInsertArgs<T>, TResult> onInsert,
+				Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
+				Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
+				Func<ICollectionOnClearArgs<T>, TResult> onClear,
+				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
 				onClear.ArgumentNotNull("onClear != null");
 				return onClear(this);
 			}
 
 			public override void Match(
-				Action<ISetOnInsertArgs<T>> onInsert,
-				Action<ISetOnRemoveArgs<T>> onRemove,
-				Action<ISetOnReplaceArgs<T>> onReplace,
-				Action<ISetOnClearArgs<T>> onClear,
-				Action<ISetOnEmptyArgs> onEmpty)
+				Action<ICollectionOnInsertArgs<T>> onInsert,
+				Action<ICollectionOnRemoveArgs<T>> onRemove,
+				Action<ICollectionOnReplaceArgs<T>> onReplace,
+				Action<ICollectionOnClearArgs<T>> onClear,
+				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
 				onClear.ArgumentNotNull("onClear != null");
 				onClear(this);
@@ -48,32 +48,32 @@ namespace ReactiveCollections.Implementation.Transactions
 			}
 		}
 
-		private sealed class OnEmptyArgs : UpdateSetQuery<T>, ISetOnEmptyArgs
+		private sealed class OnEmptyArgs : UpdateCollectionQuery<T>, ICollectionOnEmptyArgs
 		{
 			public override TResult Match<TResult>(
-				Func<ISetOnInsertArgs<T>, TResult> onInsert,
-				Func<ISetOnRemoveArgs<T>, TResult> onRemove,
-				Func<ISetOnReplaceArgs<T>, TResult> onReplace,
-				Func<ISetOnClearArgs<T>, TResult> onClear,
-				Func<ISetOnEmptyArgs, TResult> onEmpty)
+				Func<ICollectionOnInsertArgs<T>, TResult> onInsert,
+				Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
+				Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
+				Func<ICollectionOnClearArgs<T>, TResult> onClear,
+				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
 				onEmpty.ArgumentNotNull("onEmpty != null");
 				return onEmpty(this);
 			}
 
 			public override void Match(
-				Action<ISetOnInsertArgs<T>> onInsert,
-				Action<ISetOnRemoveArgs<T>> onRemove,
-				Action<ISetOnReplaceArgs<T>> onReplace,
-				Action<ISetOnClearArgs<T>> onClear,
-				Action<ISetOnEmptyArgs> onEmpty)
+				Action<ICollectionOnInsertArgs<T>> onInsert,
+				Action<ICollectionOnRemoveArgs<T>> onRemove,
+				Action<ICollectionOnReplaceArgs<T>> onReplace,
+				Action<ICollectionOnClearArgs<T>> onClear,
+				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
 				onEmpty.ArgumentNotNull("onEmpty != null");
 				onEmpty(this);
 			}
 		}
 
-		private sealed class OnInsertArgs : UpdateSetQuery<T>, ISetOnInsertArgs<T>
+		private sealed class OnInsertArgs : UpdateCollectionQuery<T>, ICollectionOnInsertArgs<T>
 		{
 			private readonly T _item;
 
@@ -83,22 +83,22 @@ namespace ReactiveCollections.Implementation.Transactions
 			}
 
 			public override TResult Match<TResult>(
-				Func<ISetOnInsertArgs<T>, TResult> onInsert,
-				Func<ISetOnRemoveArgs<T>, TResult> onRemove,
-				Func<ISetOnReplaceArgs<T>, TResult> onReplace,
-				Func<ISetOnClearArgs<T>, TResult> onClear,
-				Func<ISetOnEmptyArgs, TResult> onEmpty)
+				Func<ICollectionOnInsertArgs<T>, TResult> onInsert,
+				Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
+				Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
+				Func<ICollectionOnClearArgs<T>, TResult> onClear,
+				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
 				onInsert.ArgumentNotNull("onInsert != null");
 				return onInsert(this);
 			}
 
 			public override void Match(
-				Action<ISetOnInsertArgs<T>> onInsert,
-				Action<ISetOnRemoveArgs<T>> onRemove,
-				Action<ISetOnReplaceArgs<T>> onReplace,
-				Action<ISetOnClearArgs<T>> onClear,
-				Action<ISetOnEmptyArgs> onEmpty)
+				Action<ICollectionOnInsertArgs<T>> onInsert,
+				Action<ICollectionOnRemoveArgs<T>> onRemove,
+				Action<ICollectionOnReplaceArgs<T>> onReplace,
+				Action<ICollectionOnClearArgs<T>> onClear,
+				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
 				onInsert.ArgumentNotNull("onInsert != null");
 				onInsert(this);
@@ -110,7 +110,7 @@ namespace ReactiveCollections.Implementation.Transactions
 			}
 		}
 
-		private sealed class OnRemoveArgs : UpdateSetQuery<T>, ISetOnRemoveArgs<T>
+		private sealed class OnRemoveArgs : UpdateCollectionQuery<T>, ICollectionOnRemoveArgs<T>
 		{
 			private readonly T _item;
 
@@ -120,22 +120,22 @@ namespace ReactiveCollections.Implementation.Transactions
 			}
 
 			public override TResult Match<TResult>(
-				Func<ISetOnInsertArgs<T>, TResult> onInsert,
-				Func<ISetOnRemoveArgs<T>, TResult> onRemove,
-				Func<ISetOnReplaceArgs<T>, TResult> onReplace,
-				Func<ISetOnClearArgs<T>, TResult> onClear,
-				Func<ISetOnEmptyArgs, TResult> onEmpty)
+				Func<ICollectionOnInsertArgs<T>, TResult> onInsert,
+				Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
+				Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
+				Func<ICollectionOnClearArgs<T>, TResult> onClear,
+				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
 				onRemove.ArgumentNotNull("onRemove != null");
 				return onRemove(this);
 			}
 
 			public override void Match(
-				Action<ISetOnInsertArgs<T>> onInsert,
-				Action<ISetOnRemoveArgs<T>> onRemove,
-				Action<ISetOnReplaceArgs<T>> onReplace,
-				Action<ISetOnClearArgs<T>> onClear,
-				Action<ISetOnEmptyArgs> onEmpty)
+				Action<ICollectionOnInsertArgs<T>> onInsert,
+				Action<ICollectionOnRemoveArgs<T>> onRemove,
+				Action<ICollectionOnReplaceArgs<T>> onReplace,
+				Action<ICollectionOnClearArgs<T>> onClear,
+				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
 				onRemove.ArgumentNotNull("onRemove != null");
 				onRemove(this);
@@ -147,7 +147,7 @@ namespace ReactiveCollections.Implementation.Transactions
 			}
 		}
 
-		private sealed class OnReplaceArgs : UpdateSetQuery<T>, ISetOnReplaceArgs<T>
+		private sealed class OnReplaceArgs : UpdateCollectionQuery<T>, ICollectionOnReplaceArgs<T>
 		{
 			private readonly T _oldItem;
 			private readonly T _newItem;
@@ -169,22 +169,22 @@ namespace ReactiveCollections.Implementation.Transactions
 			}
 
 			public override TResult Match<TResult>(
-				Func<ISetOnInsertArgs<T>, TResult> onInsert,
-				Func<ISetOnRemoveArgs<T>, TResult> onRemove,
-				Func<ISetOnReplaceArgs<T>, TResult> onReplace,
-				Func<ISetOnClearArgs<T>, TResult> onClear,
-				Func<ISetOnEmptyArgs, TResult> onEmpty)
+				Func<ICollectionOnInsertArgs<T>, TResult> onInsert,
+				Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
+				Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
+				Func<ICollectionOnClearArgs<T>, TResult> onClear,
+				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
 				onReplace.ArgumentNotNull("onReplace != null");
 				return onReplace(this);
 			}
 
 			public override void Match(
-				Action<ISetOnInsertArgs<T>> onInsert,
-				Action<ISetOnRemoveArgs<T>> onRemove,
-				Action<ISetOnReplaceArgs<T>> onReplace,
-				Action<ISetOnClearArgs<T>> onClear,
-				Action<ISetOnEmptyArgs> onEmpty)
+				Action<ICollectionOnInsertArgs<T>> onInsert,
+				Action<ICollectionOnRemoveArgs<T>> onRemove,
+				Action<ICollectionOnReplaceArgs<T>> onReplace,
+				Action<ICollectionOnClearArgs<T>> onClear,
+				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
 				onReplace.ArgumentNotNull("onReplace != null");
 				onReplace(this);
@@ -192,48 +192,48 @@ namespace ReactiveCollections.Implementation.Transactions
 		}
 
 		[NotNull]
-		public static IUpdateSetQuery<T> OnClear([NotNull] IReadOnlyList<T> items)
+		public static IUpdateCollectionQuery<T> OnClear([NotNull] IReadOnlyList<T> items)
 		{
 			items.ArgumentNotNull("items != null");
 			return new OnClearArgs(items);
 		}
 
 		[NotNull]
-		public static IUpdateSetQuery<T> OnEmpty()
+		public static IUpdateCollectionQuery<T> OnEmpty()
 		{
 			return new OnEmptyArgs();
 		}
 
 		[NotNull]
-		public static IUpdateSetQuery<T> OnInsert(T item)
+		public static IUpdateCollectionQuery<T> OnInsert(T item)
 		{
 			return new OnInsertArgs(item);
 		}
 
 		[NotNull]
-		public static IUpdateSetQuery<T> OnRemove(T item)
+		public static IUpdateCollectionQuery<T> OnRemove(T item)
 		{
 			return new OnRemoveArgs(item);
 		}
 
 		[NotNull]
-		public static IUpdateSetQuery<T> OnReplace(T oldItem, T newItem)
+		public static IUpdateCollectionQuery<T> OnReplace(T oldItem, T newItem)
 		{
 			return new OnReplaceArgs(oldItem, newItem);
 		} 
 
 		public abstract TResult Match<TResult>(
-			Func<ISetOnInsertArgs<T>, TResult> onInsert,
-			Func<ISetOnRemoveArgs<T>, TResult> onRemove,
-			Func<ISetOnReplaceArgs<T>, TResult> onReplace,
-			Func<ISetOnClearArgs<T>, TResult> onClear,
-			Func<ISetOnEmptyArgs, TResult> onEmpty);
+			Func<ICollectionOnInsertArgs<T>, TResult> onInsert,
+			Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
+			Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
+			Func<ICollectionOnClearArgs<T>, TResult> onClear,
+			Func<ICollectionOnEmptyArgs, TResult> onEmpty);
 
 		public abstract void Match(
-			Action<ISetOnInsertArgs<T>> onInsert,
-			Action<ISetOnRemoveArgs<T>> onRemove,
-			Action<ISetOnReplaceArgs<T>> onReplace,
-			Action<ISetOnClearArgs<T>> onClear,
-			Action<ISetOnEmptyArgs> onEmpty);
+			Action<ICollectionOnInsertArgs<T>> onInsert,
+			Action<ICollectionOnRemoveArgs<T>> onRemove,
+			Action<ICollectionOnReplaceArgs<T>> onReplace,
+			Action<ICollectionOnClearArgs<T>> onClear,
+			Action<ICollectionOnEmptyArgs> onEmpty);
 	}
 }
