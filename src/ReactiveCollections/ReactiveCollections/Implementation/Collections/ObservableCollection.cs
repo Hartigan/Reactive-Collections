@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Subjects;
 using JetBrains.Annotations;
@@ -13,7 +14,7 @@ namespace ReactiveCollections.Implementation.Collections
 	public class ObservableCollection<T> : IObservableCollection<T>
 	{
 		[NotNull]
-		private readonly List<T> _set;
+		private readonly Collection<T> _collection;
 
 		[NotNull]
 		private readonly Subject<IUpdateCollectionQuery<T>> _subject;
@@ -24,18 +25,18 @@ namespace ReactiveCollections.Implementation.Collections
 		public ObservableCollection()
 		{
 			_subject = new Subject<IUpdateCollectionQuery<T>>();
-			_set = new List<T>();
+			_collection = new Collection<T>();
 		}
 
 		public ObservableCollection(IEnumerable<T> items)
 		{
 			_subject = new Subject<IUpdateCollectionQuery<T>>();
-			_set = new List<T>(items);
+			_collection = new Collection<T>(items.ToList());
 		}
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			return _set.GetEnumerator();
+			return _collection.GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
@@ -50,7 +51,7 @@ namespace ReactiveCollections.Implementation.Collections
 
 		public int Count
 		{
-			get { return _set.Count; }
+			get { return _collection.Count; }
 		}
 
 		public bool IsReadOnly
@@ -70,18 +71,18 @@ namespace ReactiveCollections.Implementation.Collections
 
 		public void Add(T item)
 		{
-			_set.Add(item);
+			_collection.Add(item);
 			ToTransaction(UpdateCollectionQuery<T>.OnInsert(item));
 		}
 
 		public void CopyTo(T[] array, int arrayIndex)
 		{
-			_set.CopyTo(array, arrayIndex);
+			_collection.CopyTo(array, arrayIndex);
 		}
 
 		public bool Remove(T item)
 		{
-			if (_set.Remove(item))
+			if (_collection.Remove(item))
 			{
 				ToTransaction(UpdateCollectionQuery<T>.OnRemove(item));
 				return true;
@@ -91,14 +92,14 @@ namespace ReactiveCollections.Implementation.Collections
 
 		public void Clear()
 		{
-			var query = UpdateCollectionQuery<T>.OnClear(_set.ToList());
-			_set.Clear();
+			var query = UpdateCollectionQuery<T>.OnClear(_collection.ToList());
+			_collection.Clear();
 			ToTransaction(query);
 		}
 
 		public bool Contains(T item)
 		{
-			return _set.Contains(item);
+			return _collection.Contains(item);
 		}
 
 		private void DeleteTransaction()
