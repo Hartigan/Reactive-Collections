@@ -8,7 +8,7 @@ namespace ReactiveCollections.Implementation.Transactions
 	internal class Transaction<T, TItem> : IDisposable where T : IUpdateCollectionQuery<TItem>
 	{
 		[NotNull]
-		private readonly IObserver<IEnumerable<T>> _observer;
+		private readonly IObserver<T> _observer;
 
 		[NotNull]
 		private readonly Action _callback;
@@ -16,7 +16,7 @@ namespace ReactiveCollections.Implementation.Transactions
 		[NotNull]
 		private readonly List<T> _queries = new List<T>();
 
-		public Transaction([NotNull] IObserver<IEnumerable<T>> observer, [NotNull] Action callback)
+		public Transaction([NotNull] IObserver<T> observer, [NotNull] Action callback)
 		{
 			_observer = observer;
 			_callback = callback;
@@ -29,7 +29,10 @@ namespace ReactiveCollections.Implementation.Transactions
 
 		public void Dispose()
 		{
-			_observer.OnNext(_queries);
+			foreach (T query in _queries)
+			{
+				_observer.OnNext(query);
+			}
 			_callback();
 		}
 	}

@@ -16,20 +16,20 @@ namespace ReactiveCollections.Implementation.Collections
 		private readonly List<T> _set;
 
 		[NotNull]
-		private readonly Subject<IEnumerable<IUpdateCollectionQuery<T>>> _subject;
+		private readonly Subject<IUpdateCollectionQuery<T>> _subject;
 
 		[CanBeNull]
 		private Transaction<IUpdateCollectionQuery<T>, T> _transaction;
 
 		public ObservableCollection()
 		{
-			_subject = new Subject<IEnumerable<IUpdateCollectionQuery<T>>>();
+			_subject = new Subject<IUpdateCollectionQuery<T>>();
 			_set = new List<T>();
 		}
 
 		public ObservableCollection(IEnumerable<T> items)
 		{
-			_subject = new Subject<IEnumerable<IUpdateCollectionQuery<T>>>();
+			_subject = new Subject<IUpdateCollectionQuery<T>>();
 			_set = new List<T>(items);
 		}
 
@@ -43,7 +43,7 @@ namespace ReactiveCollections.Implementation.Collections
 			return GetEnumerator();
 		}
 
-		public IObservable<IEnumerable<IUpdateCollectionQuery<T>>> CollectionChanged
+		public IObservable<IUpdateCollectionQuery<T>> CollectionChanged
 		{
 			get { return _subject; }
 		}
@@ -70,8 +70,8 @@ namespace ReactiveCollections.Implementation.Collections
 
 		public void Add(T item)
 		{
-			ToTransaction(UpdateCollectionQuery<T>.OnInsert(item));
 			_set.Add(item);
+			ToTransaction(UpdateCollectionQuery<T>.OnInsert(item));
 		}
 
 		public void CopyTo(T[] array, int arrayIndex)
@@ -91,8 +91,9 @@ namespace ReactiveCollections.Implementation.Collections
 
 		public void Clear()
 		{
-			ToTransaction(UpdateCollectionQuery<T>.OnClear(_set.ToList()));
+			var query = UpdateCollectionQuery<T>.OnClear(_set.ToList());
 			_set.Clear();
+			ToTransaction(query);
 		}
 
 		public bool Contains(T item)
@@ -110,6 +111,10 @@ namespace ReactiveCollections.Implementation.Collections
 			if (_transaction != null)
 			{
 				_transaction.AddQuery(update);
+			}
+			else
+			{
+				_subject.OnNext(update);
 			}
 		}
 	}
