@@ -44,20 +44,11 @@ namespace ReactiveCollections.Implementation.Collections
 			return GetEnumerator();
 		}
 
-		public IObservable<IUpdateCollectionQuery<T>> CollectionChanged
-		{
-			get { return _subject; }
-		}
+		public IObservable<IUpdateCollectionQuery<T>> CollectionChanged => _subject;
 
-		public int Count
-		{
-			get { return _collection.Count; }
-		}
+		public int Count => _collection.Count;
 
-		public bool IsReadOnly
-		{
-			get { return false; }
-		}
+		public bool IsReadOnly => false;
 
 		public IDisposable Transaction()
 		{

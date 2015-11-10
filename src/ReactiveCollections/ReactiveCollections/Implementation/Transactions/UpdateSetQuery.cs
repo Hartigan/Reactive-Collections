@@ -16,7 +16,7 @@ namespace ReactiveCollections.Implementation.Transactions
 
 			public OnClearArgs(IReadOnlyList<T> items)
 			{
-				items.ArgumentNotNull("items != null");
+				items.ArgumentNotNull(nameof(items));
 				_items = items;
 			}
 
@@ -27,7 +27,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnClearArgs<T>, TResult> onClear,
 				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
-				onClear.ArgumentNotNull("onClear != null");
+				onClear.ArgumentNotNull(nameof(onClear));
 				return onClear(this);
 			}
 
@@ -38,14 +38,11 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnClearArgs<T>> onClear,
 				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
-				onClear.ArgumentNotNull("onClear != null");
+				onClear.ArgumentNotNull(nameof(onClear));
 				onClear(this);
 			}
 
-			public IReadOnlyList<T> Items
-			{
-				get { return _items; }
-			}
+			public IReadOnlyList<T> Items => _items;
 		}
 
 		private sealed class OnEmptyArgs : UpdateCollectionQuery<T>, ICollectionOnEmptyArgs
@@ -57,7 +54,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnClearArgs<T>, TResult> onClear,
 				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
-				onEmpty.ArgumentNotNull("onEmpty != null");
+				onEmpty.ArgumentNotNull(nameof(onEmpty));
 				return onEmpty(this);
 			}
 
@@ -68,7 +65,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnClearArgs<T>> onClear,
 				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
-				onEmpty.ArgumentNotNull("onEmpty != null");
+				onEmpty.ArgumentNotNull(nameof(onEmpty));
 				onEmpty(this);
 			}
 		}
@@ -89,7 +86,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnClearArgs<T>, TResult> onClear,
 				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
-				onInsert.ArgumentNotNull("onInsert != null");
+				onInsert.ArgumentNotNull(nameof(onInsert));
 				return onInsert(this);
 			}
 
@@ -100,14 +97,11 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnClearArgs<T>> onClear,
 				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
-				onInsert.ArgumentNotNull("onInsert != null");
+				onInsert.ArgumentNotNull(nameof(onInsert));
 				onInsert(this);
 			}
 
-			public T Item
-			{
-				get { return _item; }
-			}
+			public T Item => _item;
 		}
 
 		private sealed class OnRemoveArgs : UpdateCollectionQuery<T>, ICollectionOnRemoveArgs<T>
@@ -126,7 +120,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnClearArgs<T>, TResult> onClear,
 				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
-				onRemove.ArgumentNotNull("onRemove != null");
+				onRemove.ArgumentNotNull(nameof(onRemove));
 				return onRemove(this);
 			}
 
@@ -137,14 +131,11 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnClearArgs<T>> onClear,
 				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
-				onRemove.ArgumentNotNull("onRemove != null");
+				onRemove.ArgumentNotNull(nameof(onRemove));
 				onRemove(this);
 			}
 
-			public T Item
-			{
-				get { return _item; }
-			}
+			public T Item => _item;
 		}
 
 		private sealed class OnReplaceArgs : UpdateCollectionQuery<T>, ICollectionOnReplaceArgs<T>
@@ -152,15 +143,9 @@ namespace ReactiveCollections.Implementation.Transactions
 			private readonly T _oldItem;
 			private readonly T _newItem;
 
-			public T OldItem
-			{
-				get { return _oldItem; }
-			}
+			public T OldItem => _oldItem;
 
-			public T NewItem
-			{
-				get { return _newItem; }
-			}
+			public T NewItem => _newItem;
 
 			public OnReplaceArgs(T oldItem, T newItem)
 			{
@@ -175,7 +160,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnClearArgs<T>, TResult> onClear,
 				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
-				onReplace.ArgumentNotNull("onReplace != null");
+				onReplace.ArgumentNotNull(nameof(onReplace));
 				return onReplace(this);
 			}
 
@@ -186,7 +171,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnClearArgs<T>> onClear,
 				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
-				onReplace.ArgumentNotNull("onReplace != null");
+				onReplace.ArgumentNotNull(nameof(onReplace));
 				onReplace(this);
 			}
 		}
@@ -194,7 +179,7 @@ namespace ReactiveCollections.Implementation.Transactions
 		[NotNull]
 		public static IUpdateCollectionQuery<T> OnClear([NotNull] IReadOnlyList<T> items)
 		{
-			items.ArgumentNotNull("items != null");
+			items.ArgumentNotNull(nameof(items));
 			return new OnClearArgs(items);
 		}
 

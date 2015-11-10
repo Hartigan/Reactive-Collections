@@ -26,7 +26,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnClearArgs<T>, TResult> onClear,
 				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
-				onClear.ArgumentNotNull("onClear != null");
+				onClear.ArgumentNotNull(nameof(onClear));
 				return onClear(this);
 			}
 
@@ -37,7 +37,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnClearArgs<T>> onClear,
 				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
-				onClear.ArgumentNotNull("onClear != null");
+				onClear.ArgumentNotNull(nameof(onClear));
 				onClear(this);
 			}
 
@@ -49,7 +49,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<IListOnClearArgs<T>, TResult> onClear,
 				Func<IListOnEmptyArgs, TResult> onEmpty)
 			{
-				onClear.ArgumentNotNull("onClear != null");
+				onClear.ArgumentNotNull(nameof(onClear));
 				return onClear(this);
 			}
 
@@ -61,19 +61,13 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<IListOnClearArgs<T>> onClear,
 				Action<IListOnEmptyArgs> onEmpty)
 			{
-				onClear.ArgumentNotNull("onClear != null");
+				onClear.ArgumentNotNull(nameof(onClear));
 				onClear(this);
 			}
 
-			IReadOnlyList<T> IListOnClearArgs<T>.Items
-			{
-				get { return _items; }
-			}
+			IReadOnlyList<T> IListOnClearArgs<T>.Items => _items;
 
-			IReadOnlyList<T> ICollectionOnClearArgs<T>.Items
-			{
-				get { return _items; }
-			}
+			IReadOnlyList<T> ICollectionOnClearArgs<T>.Items => _items;
 		}
 
 		private sealed class OnEmptyArgs : UpdateListQuery<T>, IListOnEmptyArgs
@@ -85,7 +79,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnClearArgs<T>, TResult> onClear,
 				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
-				onEmpty.ArgumentNotNull("onEmpty != null");
+				onEmpty.ArgumentNotNull(nameof(onEmpty));
 				return onEmpty(this);
 			}
 
@@ -96,7 +90,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnClearArgs<T>> onClear,
 				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
-				onEmpty.ArgumentNotNull("onEmpty != null");
+				onEmpty.ArgumentNotNull(nameof(onEmpty));
 				onEmpty(this);
 			}
 
@@ -108,7 +102,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<IListOnClearArgs<T>, TResult> onClear,
 				Func<IListOnEmptyArgs, TResult> onEmpty)
 			{
-				onEmpty.ArgumentNotNull("onEmpty != null");
+				onEmpty.ArgumentNotNull(nameof(onEmpty));
 				return onEmpty(this);
 			}
 
@@ -120,7 +114,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<IListOnClearArgs<T>> onClear,
 				Action<IListOnEmptyArgs> onEmpty)
 			{
-				onEmpty.ArgumentNotNull("onEmpty != null");
+				onEmpty.ArgumentNotNull(nameof(onEmpty));
 				onEmpty(this);
 			}
 		}
@@ -143,7 +137,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnClearArgs<T>, TResult> onClear,
 				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
-				onInsert.ArgumentNotNull("onInsert != null");
+				onInsert.ArgumentNotNull(nameof(onInsert));
 				return onInsert(this);
 			}
 
@@ -154,7 +148,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnClearArgs<T>> onClear,
 				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
-				onInsert.ArgumentNotNull("onInsert != null");
+				onInsert.ArgumentNotNull(nameof(onInsert));
 				onInsert(this);
 			}
 
@@ -166,7 +160,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<IListOnClearArgs<T>, TResult> onClear,
 				Func<IListOnEmptyArgs, TResult> onEmpty)
 			{
-				onInsert.ArgumentNotNull("onInsert != null");
+				onInsert.ArgumentNotNull(nameof(onInsert));
 				return onInsert(this);
 			}
 
@@ -178,24 +172,15 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<IListOnClearArgs<T>> onClear,
 				Action<IListOnEmptyArgs> onEmpty)
 			{
-				onInsert.ArgumentNotNull("onInsert != null");
+				onInsert.ArgumentNotNull(nameof(onInsert));
 				onInsert(this);
 			}
 
-			T IListOnInsertArgs<T>.Item
-			{
-				get { return _item; }
-			}
+			T IListOnInsertArgs<T>.Item => _item;
 
-			public int Index
-			{
-				get { return _index; }
-			}
+			public int Index => _index;
 
-			T ICollectionOnInsertArgs<T>.Item
-			{
-				get { return _item; }
-			}
+			T ICollectionOnInsertArgs<T>.Item => _item;
 		}
 
 		private sealed class OnMoveArgs : UpdateListQuery<T>, IListOnMoveArgs<T>, ICollectionOnEmptyArgs
@@ -218,7 +203,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnClearArgs<T>, TResult> onClear,
 				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
-				onEmpty.ArgumentNotNull("onEmpty != null");
+				onEmpty.ArgumentNotNull(nameof(onEmpty));
 				return onEmpty(this);
 			}
 
@@ -229,7 +214,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnClearArgs<T>> onClear,
 				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
-				onEmpty.ArgumentNotNull("onEmpty != null");
+				onEmpty.ArgumentNotNull(nameof(onEmpty));
 				onEmpty(this);
 			}
 
@@ -241,7 +226,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<IListOnClearArgs<T>, TResult> onClear,
 				Func<IListOnEmptyArgs, TResult> onEmpty)
 			{
-				onMove.ArgumentNotNull("onMove != null");
+				onMove.ArgumentNotNull(nameof(onMove));
 				return onMove(this);
 			}
 
@@ -253,24 +238,15 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<IListOnClearArgs<T>> onClear,
 				Action<IListOnEmptyArgs> onEmpty)
 			{
-				onMove.ArgumentNotNull("onMove != null");
+				onMove.ArgumentNotNull(nameof(onMove));
 				onMove(this);
 			}
 
-			public T Item
-			{
-				get { return _item; }
-			}
+			public T Item => _item;
 
-			public int OldIndex
-			{
-				get { return _oldIndex; }
-			}
+			public int OldIndex => _oldIndex;
 
-			public int NewIndex
-			{
-				get { return _newIndex; }
-			}
+			public int NewIndex => _newIndex;
 		}
 
 		private sealed class OnRemoveArgs : UpdateListQuery<T>, IListOnRemoveArgs<T>, ICollectionOnRemoveArgs<T>
@@ -278,20 +254,11 @@ namespace ReactiveCollections.Implementation.Transactions
 			private readonly T _item;
 			private readonly int _index;
 
-			T IListOnRemoveArgs<T>.Item
-			{
-				get { return _item; }
-			}
+			T IListOnRemoveArgs<T>.Item => _item;
 
-			public int Index
-			{
-				get { return _index; }
-			}
+			public int Index => _index;
 
-			T ICollectionOnRemoveArgs<T>.Item
-			{
-				get { return _item; }
-			}
+			T ICollectionOnRemoveArgs<T>.Item => _item;
 
 			public OnRemoveArgs(T item, int index)
 			{
@@ -306,7 +273,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnClearArgs<T>, TResult> onClear,
 				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
-				onRemove.ArgumentNotNull("onRemove != null");
+				onRemove.ArgumentNotNull(nameof(onRemove));
 				return onRemove(this);
 			}
 
@@ -317,7 +284,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnClearArgs<T>> onClear,
 				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
-				onRemove.ArgumentNotNull("onRemove != null");
+				onRemove.ArgumentNotNull(nameof(onRemove));
 				onRemove(this);
 			}
 
@@ -329,7 +296,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<IListOnClearArgs<T>, TResult> onClear,
 				Func<IListOnEmptyArgs, TResult> onEmpty)
 			{
-				onRemove.ArgumentNotNull("onRemove != null");
+				onRemove.ArgumentNotNull(nameof(onRemove));
 				return onRemove(this);
 			}
 
@@ -341,7 +308,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<IListOnClearArgs<T>> onClear,
 				Action<IListOnEmptyArgs> onEmpty)
 			{
-				onRemove.ArgumentNotNull("onRemove != null");
+				onRemove.ArgumentNotNull(nameof(onRemove));
 				onRemove(this);
 			}
 		}
@@ -352,30 +319,15 @@ namespace ReactiveCollections.Implementation.Transactions
 			private readonly T _newItem;
 			private readonly int _index;
 
-			T IListOnReplaceArgs<T>.OldItem
-			{
-				get { return _oldItem; }
-			}
+			T IListOnReplaceArgs<T>.OldItem => _oldItem;
 
-			T IListOnReplaceArgs<T>.NewItem
-			{
-				get { return _newItem; }
-			}
+			T IListOnReplaceArgs<T>.NewItem => _newItem;
 
-			public int Index
-			{
-				get { return _index; }
-			}
+			public int Index => _index;
 
-			T ICollectionOnReplaceArgs<T>.OldItem
-			{
-				get { return _oldItem; }
-			}
+			T ICollectionOnReplaceArgs<T>.OldItem => _oldItem;
 
-			T ICollectionOnReplaceArgs<T>.NewItem
-			{
-				get { return _newItem; }
-			}
+			T ICollectionOnReplaceArgs<T>.NewItem => _newItem;
 
 			public OnReplaceArgs(T oldItem, T newItem, int index)
 			{
@@ -391,7 +343,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnClearArgs<T>, TResult> onClear,
 				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
 			{
-				onReplace.ArgumentNotNull("onReplace != null");
+				onReplace.ArgumentNotNull(nameof(onReplace));
 				return onReplace(this);
 			}
 
@@ -402,7 +354,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnClearArgs<T>> onClear,
 				Action<ICollectionOnEmptyArgs> onEmpty)
 			{
-				onReplace.ArgumentNotNull("onReplace != null");
+				onReplace.ArgumentNotNull(nameof(onReplace));
 				onReplace(this);
 			}
 
@@ -414,7 +366,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<IListOnClearArgs<T>, TResult> onClear,
 				Func<IListOnEmptyArgs, TResult> onEmpty)
 			{
-				onReplace.ArgumentNotNull("onReplace != null");
+				onReplace.ArgumentNotNull(nameof(onReplace));
 				return onReplace(this);
 			}
 
@@ -426,7 +378,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<IListOnClearArgs<T>> onClear,
 				Action<IListOnEmptyArgs> onEmpty)
 			{
-				onReplace.ArgumentNotNull("onReplace != null");
+				onReplace.ArgumentNotNull(nameof(onReplace));
 				onReplace(this);
 			}
 		}
@@ -434,7 +386,7 @@ namespace ReactiveCollections.Implementation.Transactions
 		[NotNull]
 		public static IUpdateListQuery<T> OnClear([NotNull] IReadOnlyList<T> items)
 		{
-			items.ArgumentNotNull("items != null");
+			items.ArgumentNotNull(nameof(items));
 			return new OnClearArgs(items);
 		}
 

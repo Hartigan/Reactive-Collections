@@ -43,10 +43,7 @@ namespace ReactiveCollections.Implementation.Collections
 			return GetEnumerator();
 		}
 
-		public IObservable<IUpdateCollectionQuery<T>> CollectionChanged
-		{
-			get { return _subject; }
-		}
+		public IObservable<IUpdateCollectionQuery<T>> CollectionChanged => _subject;
 
 		public void Add(T item)
 		{
@@ -84,25 +81,13 @@ namespace ReactiveCollections.Implementation.Collections
 			return false;
 		}
 
-		int IObservableCollection<T>.Count
-		{
-			get { return _list.Count; }
-		}
+		int IObservableCollection<T>.Count => _list.Count;
 
-		int ICollection<T>.Count
-		{
-			get { return _list.Count; }
-		}
+		int ICollection<T>.Count => _list.Count;
 
-		public bool IsReadOnly
-		{
-			get { return false; }
-		}
+		public bool IsReadOnly => false;
 
-		int IObservableReadOnlyCollection<T>.Count
-		{
-			get { return _list.Count; }
-		}
+		int IObservableReadOnlyCollection<T>.Count => _list.Count;
 
 		public IDisposable Transaction()
 		{
@@ -114,10 +99,7 @@ namespace ReactiveCollections.Implementation.Collections
 			return _transaction = new Transaction<IUpdateListQuery<T>, T>(_subject, DeleteTransaction);
 		}
 
-		int IReadOnlyCollection<T>.Count
-		{
-			get { return _list.Count; }
-		}
+		int IReadOnlyCollection<T>.Count => _list.Count;
 
 		public void Move(int oldIndex, int newIndex)
 		{
@@ -156,20 +138,11 @@ namespace ReactiveCollections.Implementation.Collections
 			ToTransaction(UpdateListQuery<T>.OnRemove(item, index));
 		}
 
-		T IReadOnlyList<T>.this[int index]
-		{
-			get { return _list[index]; }
-		}
+		T IReadOnlyList<T>.this[int index] => _list[index];
 
-		public IObservable<IUpdateListQuery<T>> ListChanged
-		{
-			get { return _subject; }
-		}
+		public IObservable<IUpdateListQuery<T>> ListChanged => _subject;
 
-		int IObservableReadOnlyList<T>.Count
-		{
-			get { return _list.Count; }
-		}
+		int IObservableReadOnlyList<T>.Count => _list.Count;
 
 		private void DeleteTransaction()
 		{
