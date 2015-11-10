@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using ReactiveCollections.Abstract.Transactions.Arguments;
 
 namespace ReactiveCollections.Abstract.Transactions
@@ -6,19 +7,19 @@ namespace ReactiveCollections.Abstract.Transactions
 	public interface IUpdateListQuery<out T> : IUpdateCollectionQuery<T>
 	{
 		TResult Match<TResult>(
-			Func<IListOnInsertArgs<T>, TResult> onInsert,
-			Func<IListOnRemoveArgs<T>, TResult> onRemove,
-			Func<IListOnReplaceArgs<T>, TResult> onReplace,
-			Func<IListOnMoveArgs<T>, TResult> onMove,
-			Func<IListOnClearArgs<T>, TResult> onClear,
-			Func<IListOnEmptyArgs, TResult> onEmpty);
+			[NotNull] Func<IListOnInsertArgs<T>, TResult> onInsert,
+			[NotNull] Func<IListOnRemoveArgs<T>, TResult> onRemove,
+			[NotNull] Func<IListOnReplaceArgs<T>, TResult> onReplace,
+			[NotNull] Func<IListOnMoveArgs<T>, TResult> onMove,
+			[NotNull] Func<IListOnClearArgs<T>, TResult> onClear,
+			[NotNull] Func<IListOnEmptyArgs, TResult> onEmpty);
 
 		void Match(
-			Action<IListOnInsertArgs<T>> onInsert,
-			Action<IListOnRemoveArgs<T>> onRemove,
-			Action<IListOnReplaceArgs<T>> onReplace,
-			Action<IListOnMoveArgs<T>> onMove,
-			Action<IListOnClearArgs<T>> onClear,
-			Action<IListOnEmptyArgs> onEmpty);
+			[NotNull] Action<IListOnInsertArgs<T>> onInsert,
+			[NotNull] Action<IListOnRemoveArgs<T>> onRemove,
+			[NotNull] Action<IListOnReplaceArgs<T>> onReplace,
+			[NotNull] Action<IListOnMoveArgs<T>> onMove,
+			[NotNull] Action<IListOnClearArgs<T>> onClear,
+			[NotNull] Action<IListOnEmptyArgs> onEmpty);
 	}
 }

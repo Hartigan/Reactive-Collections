@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using ReactiveCollections.Abstract.Transactions.Arguments;
 
 namespace ReactiveCollections.Abstract.Transactions
@@ -6,17 +7,17 @@ namespace ReactiveCollections.Abstract.Transactions
 	public interface IUpdateCollectionQuery<out T>
 	{
 		TResult Match<TResult>(
-			Func<ICollectionOnInsertArgs<T>, TResult> onInsert,
-			Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
-			Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
-			Func<ICollectionOnClearArgs<T>, TResult> onClear,
-			Func<ICollectionOnEmptyArgs, TResult> onEmpty);
+			[NotNull] Func<ICollectionOnInsertArgs<T>, TResult> onInsert,
+			[NotNull] Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
+			[NotNull] Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
+			[NotNull] Func<ICollectionOnClearArgs<T>, TResult> onClear,
+			[NotNull] Func<ICollectionOnEmptyArgs, TResult> onEmpty);
 
 		void Match(
-			Action<ICollectionOnInsertArgs<T>> onInsert,
-			Action<ICollectionOnRemoveArgs<T>> onRemove,
-			Action<ICollectionOnReplaceArgs<T>> onReplace,
-			Action<ICollectionOnClearArgs<T>> onClear,
-			Action<ICollectionOnEmptyArgs> onEmpty);
+			[NotNull] Action<ICollectionOnInsertArgs<T>> onInsert,
+			[NotNull] Action<ICollectionOnRemoveArgs<T>> onRemove,
+			[NotNull] Action<ICollectionOnReplaceArgs<T>> onReplace,
+			[NotNull] Action<ICollectionOnClearArgs<T>> onClear,
+			[NotNull] Action<ICollectionOnEmptyArgs> onEmpty);
 	}
 }
