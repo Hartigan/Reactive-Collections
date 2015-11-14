@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using JetBrains.Annotations;
 
 namespace ReactiveCollections.Extensions
@@ -13,6 +14,16 @@ namespace ReactiveCollections.Extensions
 			observable.ArgumentNotNull(nameof(observable));
 			observer.ArgumentNotNull(nameof(observer));
 			return new WeakSubscription<T>(observable, observer);
+		}
+
+		[NotNull]
+		public static IDisposable WeakSubscribe<T>(
+			[NotNull] this IObservable<T> observable,
+			[NotNull] Action<T> onNext)
+		{
+			observable.ArgumentNotNull(nameof(observable));
+			onNext.ArgumentNotNull(nameof(onNext));
+			return new WeakSubscription<T>(observable, Observer.Create(onNext));
 		}
 
 		private class WeakSubscription<T> : IDisposable, IObserver<T>
