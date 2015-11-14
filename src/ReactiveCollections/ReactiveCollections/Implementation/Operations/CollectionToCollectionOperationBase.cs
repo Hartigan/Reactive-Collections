@@ -36,9 +36,9 @@ namespace ReactiveCollections.Implementation.Operations
 				onClear: OnClear,
 				onEmpty: OnEmpty);
 
-			foreach (IUpdateCollectionQuery<T> updateListQuery in queries)
+			foreach (IUpdateCollectionQuery<T> updateQuery in queries)
 			{
-				_subject.OnNext(updateListQuery);
+				_subject.OnNext(updateQuery);
 			}
 		}
 
