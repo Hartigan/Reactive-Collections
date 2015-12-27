@@ -57,9 +57,13 @@
     <Compile Include="Abstract\Transactions\ITransactional.cs" />
     <Compile Include="Abstract\Transactions\IUpdateListQuery.cs" />
     <Compile Include="Abstract\Transactions\IUpdateCollectionQuery.cs" />
+    <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\InternalExtensions.cs" />
     <Compile Include="Implementation\Collections\ObservableList.cs" />
     <Compile Include="Implementation\Collections\ObservableCollection.cs" />
+    <Compile Include="Implementation\Operations\CollectionToCollectionOperationBase.cs" />
+    <Compile Include="Implementation\Operations\CollectionToListOperationBase.cs" />
+    <Compile Include="Implementation\Operations\ListToListOperationBase.cs" />
     <Compile Include="Implementation\Transactions\Transaction.cs" />
     <Compile Include="Implementation\Transactions\UpdateListQuery.cs" />
     <Compile Include="Implementation\Transactions\UpdateSetQuery.cs" />

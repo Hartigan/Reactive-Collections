@@ -87,7 +87,7 @@ namespace ReactiveCollections.Implementation.Collections
 
 		public bool IsReadOnly => false;
 
-		int IObservableReadOnlyCollection<T>.Count => _list.Count;
+		public int Count => _list.Count;
 
 		public IDisposable Transaction()
 		{

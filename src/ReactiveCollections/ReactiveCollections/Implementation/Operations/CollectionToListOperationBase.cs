@@ -66,11 +66,7 @@ namespace ReactiveCollections.Implementation.Operations
 
 		public IObservable<IUpdateListQuery<T>> ListChanged => _safetyObservable;
 
-		protected abstract int Count { get; }
-
-		int IObservableReadOnlyCollection<T>.Count => Count;
-
-		int IReadOnlyCollection<T>.Count => Count;
+		public abstract int Count { get; }
 
 		public abstract T this[int index] { get; }
 
