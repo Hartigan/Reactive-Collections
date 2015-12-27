@@ -2,8 +2,7 @@
 
 namespace ReactiveCollections.Abstract.Collections
 {
-	public interface IObservableReadOnlyCollection<out T> : IEnumerable<T>, INotifyCollectionChanged<T>
+	public interface IObservableReadOnlyCollection<out T> : INotifyCollectionChanged<T>, IReadOnlyCollection<T>
 	{
-		int Count { get; }
 	}
 }
