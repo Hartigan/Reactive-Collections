@@ -1,7 +1,8 @@
 ﻿{
   "dependencies": {
     "FsCheck": "2.2.1",
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0"
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
+    "Rx-Main": "2.2.5"
   },
   "frameworks": {
     "uap10.0": {}
