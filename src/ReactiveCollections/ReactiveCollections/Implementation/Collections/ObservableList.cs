@@ -114,7 +114,7 @@ namespace ReactiveCollections.Implementation.Collections
 			ToTransaction(UpdateListQuery<T>.OnMove(item, oldIndex, newIndex));
 		}
 
-		T IObservableList<T>.this[int index]
+		public T this[int index]
 		{
 			get { return _list[index]; }
 			set
@@ -123,6 +123,11 @@ namespace ReactiveCollections.Implementation.Collections
 				_list[index] = value;
 				ToTransaction(UpdateListQuery<T>.OnReplace(oldItem, value, index));
 			}
+		}
+
+		public int IndexOf(T item)
+		{
+			return _list.IndexOf(item);
 		}
 
 		public void Insert(int index, T item)
