@@ -10,59 +10,59 @@ using ReactiveCollections.Extensions;
 
 namespace ReactiveCollections.Implementation.Operations
 {
-	public abstract class CollectionToCollectionOperationBase<T> : IObservableReadOnlyCollection<T>
+	public abstract class CollectionToCollectionOperationBase<TIn, TOut> : IObservableReadOnlyCollection<TOut>
 	{
 		[NotNull]
-		private readonly Subject<IUpdateCollectionQuery<T>> _subject = new Subject<IUpdateCollectionQuery<T>>();
+		private readonly Subject<IUpdateCollectionQuery<TOut>> _subject = new Subject<IUpdateCollectionQuery<TOut>>();
 		[NotNull]
-		private readonly IObservable<IUpdateCollectionQuery<T>> _safetyObservable;
+		private readonly IObservable<IUpdateCollectionQuery<TOut>> _safetyObservable;
 		[NotNull]
 		private readonly IDisposable _sub;
 
-		protected CollectionToCollectionOperationBase([NotNull] IObservableReadOnlyCollection<T> source)
+		protected CollectionToCollectionOperationBase([NotNull] INotifyCollectionChanged<TIn> source)
 		{
 			_safetyObservable = _subject.ToKeepAliveObservable(this);
 			_sub = source.CollectionChanged.WeakSubscribe(ProcessQuery);
 		}
 
-		public abstract IEnumerator<T> GetEnumerator();
+		public abstract IEnumerator<TOut> GetEnumerator();
 
-		private void ProcessQuery([NotNull] IUpdateCollectionQuery<T> query)
+		private void ProcessQuery([NotNull] IUpdateCollectionQuery<TIn> query)
 		{
-			IEnumerable<IUpdateCollectionQuery<T>> queries = query.Match(
+			IEnumerable<IUpdateCollectionQuery<TOut>> queries = query.Match(
 				onInsert: OnInsert,
 				onRemove: OnRemove,
 				onReplace: OnReplace,
 				onClear: OnClear,
 				onEmpty: OnEmpty);
 
-			foreach (IUpdateCollectionQuery<T> updateQuery in queries)
+			foreach (IUpdateCollectionQuery<TOut> updateQuery in queries)
 			{
 				_subject.OnNext(updateQuery);
 			}
 		}
 
 		[NotNull, ItemNotNull]
-		protected abstract IEnumerable<IUpdateListQuery<T>> OnEmpty([NotNull] ICollectionOnEmptyArgs obj);
+		protected abstract IEnumerable<IUpdateCollectionQuery<TOut>> OnEmpty([NotNull] ICollectionOnEmptyArgs arg);
 
 		[NotNull, ItemNotNull]
-		protected abstract IEnumerable<IUpdateListQuery<T>> OnClear([NotNull] ICollectionOnClearArgs<T> obj);
+		protected abstract IEnumerable<IUpdateCollectionQuery<TOut>> OnClear([NotNull] ICollectionOnClearArgs<TIn> arg);
 
 		[NotNull, ItemNotNull]
-		protected abstract IEnumerable<IUpdateListQuery<T>> OnReplace([NotNull] ICollectionOnReplaceArgs<T> obj);
+		protected abstract IEnumerable<IUpdateCollectionQuery<TOut>> OnReplace([NotNull] ICollectionOnReplaceArgs<TIn> arg);
 
 		[NotNull, ItemNotNull]
-		protected abstract IEnumerable<IUpdateListQuery<T>> OnRemove([NotNull] ICollectionOnRemoveArgs<T> obj);
+		protected abstract IEnumerable<IUpdateCollectionQuery<TOut>> OnRemove([NotNull] ICollectionOnRemoveArgs<TIn> arg);
 
 		[NotNull, ItemNotNull]
-		protected abstract IEnumerable<IUpdateListQuery<T>> OnInsert([NotNull] ICollectionOnInsertArgs<T> obj);
+		protected abstract IEnumerable<IUpdateCollectionQuery<TOut>> OnInsert([NotNull] ICollectionOnInsertArgs<TIn> arg);
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
 		}
 
-		public IObservable<IUpdateCollectionQuery<T>> CollectionChanged => _safetyObservable;
+		public IObservable<IUpdateCollectionQuery<TOut>> CollectionChanged => _safetyObservable;
 
 		public abstract int Count { get; }
 	}
