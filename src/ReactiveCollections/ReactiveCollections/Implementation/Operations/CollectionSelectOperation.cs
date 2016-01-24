@@ -18,7 +18,6 @@ namespace ReactiveCollections.Implementation.Operations
 		[NotNull]
 		private Dictionary<TIn, List<TOut>> _map;
 
-		[NotNull]
 		private int _count;
 
 		public CollectionSelectOperation(
