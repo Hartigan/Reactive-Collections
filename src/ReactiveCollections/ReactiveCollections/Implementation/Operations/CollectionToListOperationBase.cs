@@ -10,7 +10,7 @@ using ReactiveCollections.Extensions;
 
 namespace ReactiveCollections.Implementation.Operations
 {
-	public abstract class CollectionToListOperationBase<TIn, TOut> : IObservableReadOnlyList<TOut>
+	public abstract class CollectionToListOperationBase<TIn, TOut> : IObservableReadOnlyList<TOut>, IDisposable
 	{
 		[NotNull]
 		private readonly Subject<IUpdateListQuery<TOut>> _subject = new Subject<IUpdateListQuery<TOut>>();
@@ -66,10 +66,20 @@ namespace ReactiveCollections.Implementation.Operations
 
 		public IObservable<IUpdateListQuery<TOut>> ListChanged => _safetyObservable;
 
+		protected void RaiseListChanged([NotNull] IUpdateListQuery<TOut> arg)
+		{
+			_subject.OnNext(arg);
+		}
+
 		public abstract int Count { get; }
 
 		public abstract TOut this[int index] { get; }
 
 		int IObservableReadOnlyList<TOut>.Count => Count;
+
+		public virtual void Dispose()
+		{
+			_sub.Dispose();
+		}
 	}
 }
