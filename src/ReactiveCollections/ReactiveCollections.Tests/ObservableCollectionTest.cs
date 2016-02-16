@@ -15,7 +15,8 @@ namespace ReactiveCollections.Tests
 
 		public ObservableCollectionTest()
 		{
-			_intGen = Arb.Generate<int>();
+			int count = 0;
+			_intGen = Gen.Fresh(() => count++);
 			_boolGen = Arb.Generate<bool>();
 		}
 
@@ -137,6 +138,55 @@ namespace ReactiveCollections.Tests
 			};
 
 			Prop.ForAll(Arb.From(_intGen), Arb.From(_boolGen), assertClear).QuickCheckThrowOnFailure();
+		}
+
+		[TestMethod]
+		public void Replace()
+		{
+			IObservableCollection<int> collection = new ObservableCollection<int>();
+
+			Action<int, int> assertReplace = (oldItem, newItem) =>
+			{
+				collection.Add(oldItem);
+
+				int eventsCount = 0;
+
+				IDisposable sub = collection.CollectionChanged.Subscribe(x =>
+				{
+					x.Match(
+						onInsert: y => { Assert.Fail(); },
+						onRemove: y => { Assert.Fail(); },
+						onReplace: y => { Assert.AreEqual(oldItem, y.OldItem); Assert.AreEqual(newItem, y.NewItem); },
+						onClear: y => { Assert.Fail(); },
+						onEmpty: y => { Assert.Fail(); });
+
+					eventsCount++;
+				});
+
+
+				int sourceCount = collection.Count;
+				int sourceCountOfOldItem = collection.Count(x => x == oldItem);
+				int sourceCountOfNewItem = collection.Count(x => x == newItem);
+
+				if (collection.Replace(oldItem, newItem))
+				{
+					Assert.AreEqual(sourceCount, collection.Count);
+					Assert.AreEqual(sourceCountOfOldItem - 1, collection.Count(x => x == oldItem));
+					Assert.AreEqual(sourceCountOfNewItem + 1, collection.Count(x => x == newItem));
+					Assert.AreEqual(eventsCount, 1);
+				}
+				else
+				{
+					Assert.AreEqual(sourceCount, collection.Count);
+					Assert.AreEqual(sourceCountOfOldItem, 0);
+					Assert.AreEqual(sourceCountOfNewItem, collection.Count(x => x == newItem));
+					Assert.AreEqual(eventsCount, 0);
+				}
+
+				sub.Dispose();
+			};
+
+			Prop.ForAll(Arb.From(_intGen), Arb.From(_intGen), assertReplace).QuickCheckThrowOnFailure();
 		}
 
 		[TestMethod]

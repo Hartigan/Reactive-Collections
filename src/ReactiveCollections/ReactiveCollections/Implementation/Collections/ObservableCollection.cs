@@ -48,6 +48,20 @@ namespace ReactiveCollections.Implementation.Collections
 
 		public int Count => _collection.Count;
 
+		public bool Replace(T oldItem, T newItem)
+		{
+			if (_collection.Remove(oldItem))
+			{
+				_collection.Add(newItem);
+				ToTransaction(UpdateCollectionQuery<T>.OnReplace(oldItem, newItem));
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
 		public bool IsReadOnly => false;
 
 		public IDisposable Transaction()

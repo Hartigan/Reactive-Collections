@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ObservableCollectionTest.cs" />
+    <Compile Include="ObservableCollectionWrapTest.cs" />
     <Compile Include="ObservableListTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTestApp.xaml.cs">

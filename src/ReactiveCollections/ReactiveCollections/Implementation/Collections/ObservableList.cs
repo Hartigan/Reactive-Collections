@@ -83,6 +83,20 @@ namespace ReactiveCollections.Implementation.Collections
 
 		int IObservableCollection<T>.Count => _list.Count;
 
+		public bool Replace(T oldItem, T newItem)
+		{
+			int index = _list.IndexOf(oldItem);
+
+			if (index >= 0)
+			{
+				_list.RemoveAt(index);
+				_list.Insert(index, newItem);
+				ToTransaction(UpdateListQuery<T>.OnReplace(oldItem, newItem, index));
+				return true;
+			}
+			return false;
+		}
+
 		int ICollection<T>.Count => _list.Count;
 
 		public bool IsReadOnly => false;
