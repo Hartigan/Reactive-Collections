@@ -70,6 +70,7 @@
     <Compile Include="Implementation\Operations\ListSelectOperation.cs" />
     <Compile Include="Implementation\Operations\ListToListOperationBase.cs" />
     <Compile Include="Implementation\Operations\ListWhereOperation.cs" />
+    <Compile Include="Implementation\Operations\ObservableExtensions.cs" />
     <Compile Include="Implementation\Transactions\Transaction.cs" />
     <Compile Include="Implementation\Transactions\UpdateListQuery.cs" />
     <Compile Include="Implementation\Transactions\UpdateSetQuery.cs" />
