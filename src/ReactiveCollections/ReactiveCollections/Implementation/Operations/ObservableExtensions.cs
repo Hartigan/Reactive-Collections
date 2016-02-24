@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using JetBrains.Annotations;
 using ReactiveCollections.Abstract.Collections;
@@ -31,6 +32,34 @@ namespace ReactiveCollections.Implementation.Operations
 					oldItems: Array.Empty<TIn>(),
 					newItems: source.ToList())),
 				selector);
+		}
+
+		[NotNull]
+		public static IObservableReadOnlyCollection<T> WhereRc<T>(
+			[NotNull] this IObservableReadOnlyCollection<T> source,
+			[NotNull] Func<T, bool> filter,
+			[NotNull] Func<T, IObservable<Unit>> observableExtractor)
+		{
+			return new CollectionWhereOperation<T>(
+				source.CollectionChanged.StartWith(UpdateCollectionQuery<T>.OnReset(
+					oldItems: Array.Empty<T>(),
+					newItems: source.ToList())),
+				filter,
+				observableExtractor);
+		}
+
+		[NotNull]
+		public static IObservableReadOnlyList<T> WhereRl<T>(
+			[NotNull] this IObservableReadOnlyList<T> source,
+			[NotNull] Func<T, bool> filter,
+			[NotNull] Func<T, IObservable<Unit>> observableExtractor)
+		{
+			return new ListWhereOperation<T>(
+				source.ListChanged.StartWith(UpdateListQuery<T>.OnReset(
+					oldItems: Array.Empty<T>(),
+					newItems: source.ToList())),
+				filter,
+				observableExtractor);
 		}
 	}
 }
