@@ -73,7 +73,7 @@
     <Compile Include="Implementation\Operations\ObservableExtensions.cs" />
     <Compile Include="Implementation\Transactions\Transaction.cs" />
     <Compile Include="Implementation\Transactions\UpdateListQuery.cs" />
-    <Compile Include="Implementation\Transactions\UpdateSetQuery.cs" />
+    <Compile Include="Implementation\Transactions\UpdateCollectionQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
