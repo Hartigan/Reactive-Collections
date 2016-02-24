@@ -16,10 +16,10 @@ namespace ReactiveCollections.Implementation.Operations
 		[NotNull] private readonly IObservable<IUpdateListQuery<TOut>> _safetyObservable;
 		[NotNull] private readonly IDisposable _sub;
 
-		protected ListToListOperationBase([NotNull] INotifyListChanged<TIn> source)
+		protected ListToListOperationBase([NotNull] IObservable<IUpdateListQuery<TIn>> source)
 		{
 			_safetyObservable = _subject.ToKeepAliveObservable(this);
-			_sub = source.ListChanged.WeakSubscribe(ProcessQuery);
+			_sub = source.WeakSubscribe(ProcessQuery);
 		}
 
 		public abstract IEnumerator<TOut> GetEnumerator();

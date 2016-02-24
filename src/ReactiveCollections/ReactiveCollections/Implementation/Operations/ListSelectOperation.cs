@@ -15,7 +15,7 @@ namespace ReactiveCollections.Implementation.Operations
 		[NotNull] private readonly List<TOut> _data = new List<TOut>(); 
 
 		public ListSelectOperation(
-			[NotNull] INotifyListChanged<TIn> source,
+			[NotNull] IObservable<IUpdateListQuery<TIn>> source,
 			[NotNull] Func<TIn, TOut> selector) : base(source)
 		{
 			_selector = selector;

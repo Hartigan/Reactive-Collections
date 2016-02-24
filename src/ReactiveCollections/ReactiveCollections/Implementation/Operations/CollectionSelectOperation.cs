@@ -21,7 +21,7 @@ namespace ReactiveCollections.Implementation.Operations
 		private int _count;
 
 		public CollectionSelectOperation(
-			[NotNull] INotifyCollectionChanged<TIn> source,
+			[NotNull] IObservable<IUpdateCollectionQuery<TIn>> source,
 			[NotNull] Func<TIn, TOut> selector) : base(source)
 		{
 			selector.ArgumentNotNull(nameof(selector));

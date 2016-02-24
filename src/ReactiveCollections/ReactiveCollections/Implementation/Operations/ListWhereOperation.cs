@@ -74,7 +74,7 @@ namespace ReactiveCollections.Implementation.Operations
 		private readonly Func<T, IObservable<Unit>> _getObservable;
 
 		public ListWhereOperation(
-			[NotNull] INotifyListChanged<T> source,
+			[NotNull] IObservable<IUpdateListQuery<T>> source,
 			[NotNull] Func<T, bool> condition,
 			[NotNull] Func<T, IObservable<Unit>> getObservable) : base(source)
 		{
