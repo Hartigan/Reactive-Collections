@@ -45,13 +45,13 @@
     <Compile Include="Abstract\Collections\IObservableReadOnlyList.cs" />
     <Compile Include="Abstract\Collections\IObservableReadOnlyCollection.cs" />
     <Compile Include="Abstract\Collections\IObservableCollection.cs" />
-    <Compile Include="Abstract\Transactions\Arguments\IListOnClearArgs.cs" />
+    <Compile Include="Abstract\Transactions\Arguments\IListOnResetArgs.cs" />
     <Compile Include="Abstract\Transactions\Arguments\IListOnEmptyArgs.cs" />
     <Compile Include="Abstract\Transactions\Arguments\IListOnInsertArgs.cs" />
     <Compile Include="Abstract\Transactions\Arguments\IListOnMoveArgs.cs" />
     <Compile Include="Abstract\Transactions\Arguments\IListOnRemoveArgs.cs" />
     <Compile Include="Abstract\Transactions\Arguments\IListOnReplaceArgs.cs" />
-    <Compile Include="Abstract\Transactions\Arguments\ICollectionOnClearArgs.cs" />
+    <Compile Include="Abstract\Transactions\Arguments\ICollectionOnResetArgs.cs" />
     <Compile Include="Abstract\Transactions\Arguments\ICollectionOnEmptyArgs.cs" />
     <Compile Include="Abstract\Transactions\Arguments\ICollectionOnInsertArgs.cs" />
     <Compile Include="Abstract\Transactions\Arguments\ICollectionOnRemoveArgs.cs" />

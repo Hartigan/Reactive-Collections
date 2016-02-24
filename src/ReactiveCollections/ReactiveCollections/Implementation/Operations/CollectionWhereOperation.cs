@@ -122,16 +122,30 @@ namespace ReactiveCollections.Implementation.Operations
 			return Enumerable.Empty<IUpdateCollectionQuery<T>>();
 		}
 
-		protected override IEnumerable<IUpdateCollectionQuery<T>> OnClear(ICollectionOnClearArgs<T> arg)
+		protected override IEnumerable<IUpdateCollectionQuery<T>> OnReset(ICollectionOnResetArgs<T> arg)
 		{
-			var newArg = UpdateCollectionQuery<T>.OnClear(_data.Where(x => x.Value).Select(x => x.Item).ToList());
+			var oldItems = _data.Where(x => x.Value).Select(x => x.Item).ToList();
 
 			foreach (var criteria in _data)
 			{
 				criteria.Dispose();
 			}
-
 			_data.Clear();
+
+			foreach (var newItem in arg.NewItems)
+			{
+				var criteria = new Criteria(
+					item: newItem,
+					condition: _condition,
+					criteriaChanged: _getObservable(newItem),
+					onItemUpdated: OnItemUpdated);
+
+				_data.Add(criteria);
+			}
+
+			var newItems = _data.Where(x => x.Value).Select(x => x.Item).ToList();
+
+			var newArg = UpdateCollectionQuery<T>.OnReset(oldItems, newItems);
 
 			return new[] {newArg};
 		}

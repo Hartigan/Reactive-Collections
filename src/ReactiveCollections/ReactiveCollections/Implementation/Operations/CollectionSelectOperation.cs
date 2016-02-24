@@ -60,11 +60,29 @@ namespace ReactiveCollections.Implementation.Operations
 			return Enumerable.Empty<IUpdateCollectionQuery<TOut>>();
 		}
 
-		protected override IEnumerable<IUpdateCollectionQuery<TOut>> OnClear(ICollectionOnClearArgs<TIn> arg)
+		protected override IEnumerable<IUpdateCollectionQuery<TOut>> OnReset(ICollectionOnResetArgs<TIn> arg)
 		{
-			IUpdateCollectionQuery<TOut> newArg = UpdateCollectionQuery<TOut>.OnClear(_map.Values.SelectMany(list => list).ToList());
+			var oldItems = _map.Values.SelectMany(x => x).ToList();
 			_map.Clear();
 			_count = 0;
+
+			foreach (var newItem in arg.NewItems)
+			{
+				List<TOut> list;
+				if (!_map.TryGetValue(newItem, out list))
+				{
+					list = new List<TOut>(1);
+					_map.Add(newItem, list);
+				}
+
+				list.Add(_selector(newItem));
+				_count++;
+			}
+
+			var newItems = _map.Values.SelectMany(x => x).ToList();
+
+			IUpdateCollectionQuery<TOut> newArg = UpdateCollectionQuery<TOut>.OnReset(oldItems, newItems);
+
 			return new [] { newArg };
 		}
 

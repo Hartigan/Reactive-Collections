@@ -11,7 +11,7 @@ namespace ReactiveCollections.Abstract.Transactions
 			[NotNull] Func<IListOnRemoveArgs<T>, TResult> onRemove,
 			[NotNull] Func<IListOnReplaceArgs<T>, TResult> onReplace,
 			[NotNull] Func<IListOnMoveArgs<T>, TResult> onMove,
-			[NotNull] Func<IListOnClearArgs<T>, TResult> onClear,
+			[NotNull] Func<IListOnResetArgs<T>, TResult> onReset,
 			[NotNull] Func<IListOnEmptyArgs, TResult> onEmpty);
 
 		void Match(
@@ -19,7 +19,7 @@ namespace ReactiveCollections.Abstract.Transactions
 			[NotNull] Action<IListOnRemoveArgs<T>> onRemove,
 			[NotNull] Action<IListOnReplaceArgs<T>> onReplace,
 			[NotNull] Action<IListOnMoveArgs<T>> onMove,
-			[NotNull] Action<IListOnClearArgs<T>> onClear,
+			[NotNull] Action<IListOnResetArgs<T>> onReset,
 			[NotNull] Action<IListOnEmptyArgs> onEmpty);
 	}
 }

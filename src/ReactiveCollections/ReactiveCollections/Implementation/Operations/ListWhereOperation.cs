@@ -190,9 +190,9 @@ namespace ReactiveCollections.Implementation.Operations
 			return Enumerable.Empty<IUpdateListQuery<T>>();
 		}
 
-		protected override IEnumerable<IUpdateListQuery<T>> OnClear(IListOnClearArgs<T> arg)
+		protected override IEnumerable<IUpdateListQuery<T>> OnReset(IListOnResetArgs<T> arg)
 		{
-			var newArg = UpdateListQuery<T>.OnClear(_data.Where(x => x.Value).Select(x => x.Item).ToList());
+			var oldItems = _data.Where(x => x.Value).Select(x => x.Item).ToList();
 
 			foreach (var criteria in _data)
 			{
@@ -200,6 +200,23 @@ namespace ReactiveCollections.Implementation.Operations
 			}
 
 			_data.Clear();
+
+			for(int i = 0; i < arg.NewItems.Count; i++)
+			{
+				var newItem = arg.NewItems[i];
+				var newCriteria = new Criteria(newItem, _condition, _getObservable(newItem), OnItemUpdated);
+				_data.Insert(i, newCriteria);
+
+				newCriteria.ActualIndex = i == 0 ? -1 : _data[i - 1].ActualIndex;
+
+				if (newCriteria.Value)
+				{
+					AddOneFromIndex(i);
+				}
+			}
+
+			var newItems = _data.Where(x => x.Value).Select(x => x.Item).ToList();
+			var newArg = UpdateListQuery<T>.OnReset(oldItems, newItems);
 
 			return new[] { newArg };
 		}

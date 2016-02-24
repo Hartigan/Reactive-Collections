@@ -10,14 +10,14 @@ namespace ReactiveCollections.Abstract.Transactions
 			[NotNull] Func<ICollectionOnInsertArgs<T>, TResult> onInsert,
 			[NotNull] Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
 			[NotNull] Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
-			[NotNull] Func<ICollectionOnClearArgs<T>, TResult> onClear,
+			[NotNull] Func<ICollectionOnResetArgs<T>, TResult> onReset,
 			[NotNull] Func<ICollectionOnEmptyArgs, TResult> onEmpty);
 
 		void Match(
 			[NotNull] Action<ICollectionOnInsertArgs<T>> onInsert,
 			[NotNull] Action<ICollectionOnRemoveArgs<T>> onRemove,
 			[NotNull] Action<ICollectionOnReplaceArgs<T>> onReplace,
-			[NotNull] Action<ICollectionOnClearArgs<T>> onClear,
+			[NotNull] Action<ICollectionOnResetArgs<T>> onReset,
 			[NotNull] Action<ICollectionOnEmptyArgs> onEmpty);
 	}
 }

@@ -31,7 +31,7 @@ namespace ReactiveCollections.Implementation.Operations
 				onRemove: OnRemove,
 				onReplace: OnReplace,
 				onMove: OnMove,
-				onClear: OnClear,
+				onReset: OnReset,
 				onEmpty: OnEmpty);
 
 			foreach (IUpdateListQuery<TOut> updateListQuery in queries)
@@ -44,7 +44,7 @@ namespace ReactiveCollections.Implementation.Operations
 		protected abstract IEnumerable<IUpdateListQuery<TOut>> OnEmpty([NotNull] IListOnEmptyArgs arg);
 
 		[NotNull, ItemNotNull]
-		protected abstract IEnumerable<IUpdateListQuery<TOut>> OnClear([NotNull] IListOnClearArgs<TIn> arg);
+		protected abstract IEnumerable<IUpdateListQuery<TOut>> OnReset([NotNull] IListOnResetArgs<TIn> arg);
 
 		[NotNull, ItemNotNull]
 		protected abstract IEnumerable<IUpdateListQuery<TOut>> OnMove([NotNull] IListOnMoveArgs<TIn> arg);

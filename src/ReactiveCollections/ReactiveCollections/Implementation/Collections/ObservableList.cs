@@ -53,7 +53,7 @@ namespace ReactiveCollections.Implementation.Collections
 
 		public void Clear()
 		{
-			var query = UpdateListQuery<T>.OnClear(_list.ToList());
+			var query = UpdateListQuery<T>.OnReset(_list.ToList(), Array.Empty<T>());
 			_list.Clear();
 			ToTransaction(query);
 		}

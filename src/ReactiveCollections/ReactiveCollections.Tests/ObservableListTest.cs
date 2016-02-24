@@ -36,7 +36,7 @@ namespace ReactiveCollections.Tests
 						onInsert: y => { Assert.AreEqual(item, y.Item); },
 						onRemove: y => { Assert.Fail(); },
 						onReplace: y => { Assert.Fail(); },
-						onClear: y => { Assert.Fail(); },
+						onReset: y => { Assert.Fail(); },
 						onEmpty: y => { Assert.Fail(); });
 
 					eventsCount++;
@@ -75,7 +75,7 @@ namespace ReactiveCollections.Tests
 						onInsert: y => { Assert.Fail(); },
 						onRemove: y => { Assert.AreEqual(item, y.Item); },
 						onReplace: y => { Assert.Fail(); },
-						onClear: y => { Assert.Fail(); },
+						onReset: y => { Assert.Fail(); },
 						onEmpty: y => { Assert.Fail(); });
 
 					eventsCount++;
@@ -125,7 +125,7 @@ namespace ReactiveCollections.Tests
 						onInsert: y => { Assert.Fail(); },
 						onRemove: y => { Assert.Fail(); },
 						onReplace: y => { Assert.Fail(); },
-						onClear: y => { Assert.IsTrue(Enumerable.SequenceEqual(sourceItems, y.Items)); },
+						onReset: y => { Assert.IsTrue(Enumerable.SequenceEqual(sourceItems, y.OldItems)); },
 						onEmpty: y => { Assert.Fail(); });
 
 					eventsCount++;
@@ -202,7 +202,7 @@ namespace ReactiveCollections.Tests
 						onRemove: y => { Assert.Fail(); },
 						onReplace: y => { Assert.Fail(); },
 						onMove: y => { Assert.Fail(); },
-						onClear: y => { Assert.Fail(); },
+						onReset: y => { Assert.Fail(); },
 						onEmpty: y => { Assert.Fail(); });
 
 					eventsCount++;
@@ -238,7 +238,7 @@ namespace ReactiveCollections.Tests
 						onRemove: y => { Assert.Fail(); },
 						onReplace: y => { Assert.Fail(); },
 						onMove: y => { Assert.Fail(); },
-						onClear: y => { Assert.Fail(); },
+						onReset: y => { Assert.Fail(); },
 						onEmpty: y => { Assert.Fail(); });
 
 					eventsCount++;
@@ -290,7 +290,7 @@ namespace ReactiveCollections.Tests
 						},
 						onReplace: y => { Assert.Fail(); },
 						onMove: y => { Assert.Fail(); },
-						onClear: y => { Assert.Fail(); },
+						onReset: y => { Assert.Fail(); },
 						onEmpty: y => { Assert.Fail(); });
 
 					eventsCount++;
@@ -352,7 +352,7 @@ namespace ReactiveCollections.Tests
 						},
 						onReplace: y => { Assert.Fail(); },
 						onMove: y => { Assert.Fail(); },
-						onClear: y => { Assert.Fail(); },
+						onReset: y => { Assert.Fail(); },
 						onEmpty: y => { Assert.Fail(); });
 
 					eventsCount++;
@@ -396,7 +396,7 @@ namespace ReactiveCollections.Tests
 							Assert.AreEqual(index, y.Index);
 						},
 						onMove: y => { Assert.Fail(); },
-						onClear: y => { Assert.Fail(); },
+						onReset: y => { Assert.Fail(); },
 						onEmpty: y => { Assert.Fail(); });
 
 					eventsCount++;
@@ -451,7 +451,7 @@ namespace ReactiveCollections.Tests
 							Assert.AreEqual(srcIndex, y.OldIndex);
 							Assert.AreEqual(dstIndex, y.NewIndex);
 						},
-						onClear: y => { Assert.Fail(); },
+						onReset: y => { Assert.Fail(); },
 						onEmpty: y => { Assert.Fail(); });
 
 					eventsCount++;
@@ -494,7 +494,11 @@ namespace ReactiveCollections.Tests
 						onRemove: y => { Assert.Fail(); },
 						onReplace: y => { Assert.Fail(); },
 						onMove: y => { Assert.Fail(); },
-						onClear: y => { Assert.IsTrue(Enumerable.SequenceEqual(sourceItems, y.Items)); },
+						onReset: y =>
+						{
+							Assert.IsTrue(Enumerable.SequenceEqual(sourceItems, y.OldItems));
+							Assert.IsTrue(y.NewItems.Count == 0);
+						},
 						onEmpty: y => { Assert.Fail(); });
 
 					eventsCount++;

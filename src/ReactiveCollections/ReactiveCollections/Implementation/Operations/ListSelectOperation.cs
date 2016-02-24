@@ -42,10 +42,19 @@ namespace ReactiveCollections.Implementation.Operations
 			return Enumerable.Empty<IUpdateListQuery<TOut>>();
 		}
 
-		protected override IEnumerable<IUpdateListQuery<TOut>> OnClear(IListOnClearArgs<TIn> arg)
+		protected override IEnumerable<IUpdateListQuery<TOut>> OnReset(IListOnResetArgs<TIn> arg)
 		{
-			var newArgs = UpdateListQuery<TOut>.OnClear(_data);
+			var oldItems = _data.ToList();
 			_data.Clear();
+
+			for (int i = 0; i < arg.NewItems.Count; i++)
+			{
+				_data.Insert(i, _selector(arg.NewItems[i]));
+			}
+
+			var newItems = _data.ToList();
+			var newArgs = UpdateListQuery<TOut>.OnReset(oldItems, newItems);
+			
 			return new[] { newArgs };
 		}
 
