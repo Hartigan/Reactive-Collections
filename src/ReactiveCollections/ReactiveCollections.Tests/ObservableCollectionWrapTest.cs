@@ -14,14 +14,12 @@ namespace ReactiveCollections.Tests
 	public class ObservableCollectionWrapTest
 	{
 		private readonly Gen<int> _intGen;
-		private readonly Gen<bool> _boolGen;
 		private readonly Func<int, int> _selector;
 
 		public ObservableCollectionWrapTest()
 		{
 			int count = 0;
 			_intGen = Gen.Fresh(() => count++);
-			_boolGen = Arb.Generate<bool>();
 			_selector = x => x*2;
 		}
 

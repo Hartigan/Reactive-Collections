@@ -7,6 +7,7 @@ using System.Reactive.Subjects;
 using JetBrains.Annotations;
 using ReactiveCollections.Abstract.Collections;
 using ReactiveCollections.Abstract.Transactions;
+using ReactiveCollections.Extensions;
 using ReactiveCollections.Implementation.Transactions;
 
 namespace ReactiveCollections.Implementation.Collections
@@ -19,18 +20,23 @@ namespace ReactiveCollections.Implementation.Collections
 		[NotNull]
 		private readonly Subject<IUpdateCollectionQuery<T>> _subject;
 
+		[NotNull]
+		private readonly IObservable<IUpdateCollectionQuery<T>> _safeObservable;
+
 		[CanBeNull]
 		private Transaction<IUpdateCollectionQuery<T>, T> _transaction;
 
 		public ObservableCollection()
 		{
 			_subject = new Subject<IUpdateCollectionQuery<T>>();
+			_safeObservable = _subject.ToKeepAliveObservable(this);
 			_collection = new Collection<T>();
 		}
 
 		public ObservableCollection(IEnumerable<T> items)
 		{
 			_subject = new Subject<IUpdateCollectionQuery<T>>();
+			_safeObservable = _subject.ToKeepAliveObservable(this);
 			_collection = new Collection<T>(items.ToList());
 		}
 
@@ -44,7 +50,7 @@ namespace ReactiveCollections.Implementation.Collections
 			return GetEnumerator();
 		}
 
-		public IObservable<IUpdateCollectionQuery<T>> CollectionChanged => _subject;
+		public IObservable<IUpdateCollectionQuery<T>> CollectionChanged => _safeObservable;
 
 		public int Count => _collection.Count;
 

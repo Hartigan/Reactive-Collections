@@ -30,12 +30,22 @@ namespace ReactiveCollections.Extensions
 		{
 			[NotNull] private readonly WeakReference _reference;
 			[NotNull] private readonly IDisposable _subscription;
+			private Action _dispose;
 			private bool _disposed;
 
 			public WeakSubscription(IObservable<T> observable, IObserver<T> observer)
 			{
 				_reference = new WeakReference(observer);
 				_subscription = observable.Subscribe(this);
+				_dispose = () =>
+				{
+					if (!_disposed)
+					{
+						_disposed = true;
+						_subscription.Dispose();
+						GC.KeepAlive(observer);
+					}
+				};
 			}
 
 			void IObserver<T>.OnCompleted()
@@ -61,11 +71,8 @@ namespace ReactiveCollections.Extensions
 
 			public void Dispose()
 			{
-				if (!_disposed)
-				{
-					_disposed = true;
-					_subscription.Dispose();
-				}
+				_dispose?.Invoke();
+				_dispose = null;
 			}
 		}
 	}

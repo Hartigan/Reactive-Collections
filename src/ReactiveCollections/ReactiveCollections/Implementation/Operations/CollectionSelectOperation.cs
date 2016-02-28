@@ -16,7 +16,7 @@ namespace ReactiveCollections.Implementation.Operations
 		private readonly Func<TIn, TOut> _selector;
 
 		[NotNull]
-		private Dictionary<TIn, List<TOut>> _map;
+		private Dictionary<TIn, List<TOut>> _map = new Dictionary<TIn, List<TOut>>();
 
 		private int _count;
 
@@ -27,7 +27,6 @@ namespace ReactiveCollections.Implementation.Operations
 			selector.ArgumentNotNull(nameof(selector));
 
 			_selector = selector;
-			_map = new Dictionary<TIn, List<TOut>>();
 		}
 
 		protected override IEnumerable<IUpdateCollectionQuery<TOut>> OnInsert(ICollectionOnInsertArgs<TIn> arg)

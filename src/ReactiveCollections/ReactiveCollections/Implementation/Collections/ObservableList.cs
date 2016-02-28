@@ -6,6 +6,7 @@ using System.Reactive.Subjects;
 using JetBrains.Annotations;
 using ReactiveCollections.Abstract.Collections;
 using ReactiveCollections.Abstract.Transactions;
+using ReactiveCollections.Extensions;
 using ReactiveCollections.Implementation.Transactions;
 
 namespace ReactiveCollections.Implementation.Collections
@@ -18,18 +19,23 @@ namespace ReactiveCollections.Implementation.Collections
 		[NotNull]
 		private readonly Subject<IUpdateListQuery<T>> _subject;
 
+		[NotNull]
+		private readonly IObservable<IUpdateListQuery<T>> _safeObservable;
+
 		[CanBeNull]
 		private Transaction<IUpdateListQuery<T>, T> _transaction;
 
 		public ObservableList()
 		{
 			_subject = new Subject<IUpdateListQuery<T>>();
+			_safeObservable = _subject.ToKeepAliveObservable(this);
 			_list = new List<T>();
 		}
 
 		public ObservableList(IList<T> items)
 		{
 			_subject = new Subject<IUpdateListQuery<T>>();
+			_safeObservable = _subject.ToKeepAliveObservable(this);
 			_list = new List<T>(items.ToList());
 		}
 
@@ -43,7 +49,7 @@ namespace ReactiveCollections.Implementation.Collections
 			return GetEnumerator();
 		}
 
-		public IObservable<IUpdateCollectionQuery<T>> CollectionChanged => _subject;
+		public IObservable<IUpdateCollectionQuery<T>> CollectionChanged => _safeObservable;
 
 		public void Add(T item)
 		{
@@ -159,7 +165,7 @@ namespace ReactiveCollections.Implementation.Collections
 
 		T IReadOnlyList<T>.this[int index] => _list[index];
 
-		public IObservable<IUpdateListQuery<T>> ListChanged => _subject;
+		public IObservable<IUpdateListQuery<T>> ListChanged => _safeObservable;
 
 		int IObservableReadOnlyList<T>.Count => _list.Count;
 
