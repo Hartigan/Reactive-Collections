@@ -69,7 +69,7 @@ namespace ReactiveCollections.Implementation.Operations
 			public int ActualIndex { get; set; }
 		}
 
-		private readonly List<Criteria> _data;
+		private readonly List<Criteria> _data = new List<Criteria>();
 		private readonly Func<T, bool> _condition;
 		private readonly Func<T, IObservable<Unit>> _getObservable;
 
@@ -80,7 +80,6 @@ namespace ReactiveCollections.Implementation.Operations
 		{
 			_condition = condition;
 			_getObservable = getObservable;
-			_data = new List<Criteria>();
 		}
 
 		protected override IEnumerable<IUpdateListQuery<T>> OnInsert(IListOnInsertArgs<T> arg)
@@ -257,13 +256,13 @@ namespace ReactiveCollections.Implementation.Operations
 				onItemUpdated: OnItemUpdated);
 			newItem.ActualIndex = srcItem.ActualIndex;
 
-			_data.Remove(srcItem);
-			_data.Add(newItem);
+			_data.RemoveAt(arg.Index);
+			_data.Insert(arg.Index, newItem);
 
 			IUpdateListQuery<T> newArg;
 			if (srcItem.Value && newItem.Value)
 			{
-				newArg = arg;
+				newArg = UpdateListQuery<T>.OnReplace(srcItem.Item, newItem.Item, srcItem.ActualIndex);
 			}
 			else if (srcItem.Value && !newItem.Value)
 			{
