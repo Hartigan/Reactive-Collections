@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ObservableCollectionTest.cs" />
+    <Compile Include="ObservableCollectionWhereTest.cs" />
     <Compile Include="ObservableCollectionWrapTest.cs" />
     <Compile Include="ObservableListTest.cs" />
     <Compile Include="ObservableListWrapTest.cs" />
