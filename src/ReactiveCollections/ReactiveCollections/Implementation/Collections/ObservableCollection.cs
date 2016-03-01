@@ -68,6 +68,20 @@ namespace ReactiveCollections.Implementation.Collections
 			}
 		}
 
+		public void Reset(IReadOnlyList<T> items)
+		{
+			var oldItems = _collection.ToList();
+			var newItems = items.ToList();
+
+			_collection.Clear();
+			foreach (var newItem in newItems)
+			{
+				_collection.Add(newItem);
+			}
+
+			ToTransaction(UpdateCollectionQuery<T>.OnReset(oldItems, newItems));
+		}
+
 		public bool IsReadOnly => false;
 
 		public IDisposable Transaction()
@@ -103,9 +117,7 @@ namespace ReactiveCollections.Implementation.Collections
 
 		public void Clear()
 		{
-			var query = UpdateCollectionQuery<T>.OnReset(_collection.ToList(), Array.Empty<T>());
-			_collection.Clear();
-			ToTransaction(query);
+			Reset(Array.Empty<T>());
 		}
 
 		public bool Contains(T item)

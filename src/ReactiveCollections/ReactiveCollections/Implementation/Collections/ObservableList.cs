@@ -59,9 +59,7 @@ namespace ReactiveCollections.Implementation.Collections
 
 		public void Clear()
 		{
-			var query = UpdateListQuery<T>.OnReset(_list.ToList(), Array.Empty<T>());
-			_list.Clear();
-			ToTransaction(query);
+			Reset(Array.Empty<T>());
 		}
 
 		public bool Contains(T item)
@@ -101,6 +99,18 @@ namespace ReactiveCollections.Implementation.Collections
 				return true;
 			}
 			return false;
+		}
+
+		public void Reset(IReadOnlyList<T> items)
+		{
+			var oldItems = _list.ToList();
+			var newItems = items.ToList();
+
+			_list.Clear();
+			_list.AddRange(newItems);
+
+			var query = UpdateListQuery<T>.OnReset(oldItems, newItems);
+			ToTransaction(query);
 		}
 
 		int ICollection<T>.Count => _list.Count;

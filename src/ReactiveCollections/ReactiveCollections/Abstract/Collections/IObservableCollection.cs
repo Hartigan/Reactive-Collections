@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using ReactiveCollections.Abstract.Transactions;
 
 namespace ReactiveCollections.Abstract.Collections
@@ -8,5 +9,7 @@ namespace ReactiveCollections.Abstract.Collections
 		new int Count { get; }
 
 		bool Replace(T oldItem, T newItem);
+
+		void Reset([NotNull] IReadOnlyList<T> items);
 	}
 }
