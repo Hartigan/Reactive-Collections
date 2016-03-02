@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FsCheck;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -512,6 +513,87 @@ namespace ReactiveCollections.Tests
 			};
 
 			Prop.ForAll(Arb.From(_intGen), Arb.From(_boolGen), assertClear).QuickCheckThrowOnFailure();
+		}
+
+		[TestMethod]
+		public void Reset_CollectionChanged()
+		{
+			IObservableList<int> collection = new ObservableList<int>();
+
+			Action<IReadOnlyList<int>, IReadOnlyList<int>> assertReset = (oldItems, newItems) =>
+			{
+				int eventsCount = 0;
+				collection.Reset(oldItems);
+
+				IDisposable sub = collection.CollectionChanged.Subscribe(x =>
+				{
+					x.Match(
+						onInsert: y => { Assert.Fail(); },
+						onRemove: y => { Assert.Fail(); },
+						onReplace: y => { Assert.Fail(); },
+						onReset: y =>
+						{
+							Assert.IsTrue(Enumerable.SequenceEqual(oldItems, y.OldItems));
+							Assert.IsTrue(Enumerable.SequenceEqual(newItems, y.NewItems));
+						},
+						onEmpty: y => { Assert.Fail(); });
+
+					eventsCount++;
+				});
+
+
+				collection.Reset(newItems);
+				Assert.IsTrue(Enumerable.SequenceEqual(collection, newItems));
+				Assert.AreEqual(eventsCount, 1);
+				sub.Dispose();
+			};
+
+			Prop.ForAll(
+				Arb.From(_intGen.ListOf(10).Select(x => x.ToList())),
+				Arb.From(_intGen.ListOf(10).Select(x => x.ToList())),
+				assertReset)
+				.QuickCheckThrowOnFailure();
+		}
+
+		[TestMethod]
+		public void Reset_ListChanged()
+		{
+			IObservableList<int> collection = new ObservableList<int>();
+
+			Action<IReadOnlyList<int>, IReadOnlyList<int>> assertReset = (oldItems, newItems) =>
+			{
+				int eventsCount = 0;
+				collection.Reset(oldItems);
+
+				IDisposable sub = collection.ListChanged.Subscribe(x =>
+				{
+					x.Match(
+						onInsert: y => { Assert.Fail(); },
+						onRemove: y => { Assert.Fail(); },
+						onReplace: y => { Assert.Fail(); },
+						onMove: y => { Assert.Fail(); },
+						onReset: y =>
+						{
+							Assert.IsTrue(Enumerable.SequenceEqual(oldItems, y.OldItems));
+							Assert.IsTrue(Enumerable.SequenceEqual(newItems, y.NewItems));
+						},
+						onEmpty: y => { Assert.Fail(); });
+
+					eventsCount++;
+				});
+
+
+				collection.Reset(newItems);
+				Assert.IsTrue(Enumerable.SequenceEqual(collection, newItems));
+				Assert.AreEqual(eventsCount, 1);
+				sub.Dispose();
+			};
+
+			Prop.ForAll(
+				Arb.From(_intGen.ListOf(10).Select(x => x.ToList())),
+				Arb.From(_intGen.ListOf(10).Select(x => x.ToList())),
+				assertReset)
+				.QuickCheckThrowOnFailure();
 		}
 
 		[TestMethod]

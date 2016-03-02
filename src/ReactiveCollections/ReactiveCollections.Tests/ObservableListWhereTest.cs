@@ -190,5 +190,27 @@ namespace ReactiveCollections.Tests
 
 			Prop.ForAll(Arb.From(_intGen), Arb.From(_indexGen), assertReplaceByIndex).QuickCheckThrowOnFailure();
 		}
+
+		[TestMethod]
+		public void Reset()
+		{
+			IObservableList<BehaviorSubject<int>> collection = new ObservableList<BehaviorSubject<int>>();
+			IObservableReadOnlyList<int> actualOperation = collection.WhereRl(_filter, _getUpdater).SelectRl(_selector);
+			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(_selector);
+
+			Action<IReadOnlyList<BehaviorSubject<int>>, IReadOnlyList<BehaviorSubject<int>>> assertReset = (oldItems, newItems) =>
+			{
+				collection.Reset(oldItems);
+				Assert.IsTrue(Enumerable.SequenceEqual(expectedOperation, actualOperation));
+				collection.Reset(newItems);
+				Assert.IsTrue(Enumerable.SequenceEqual(expectedOperation, actualOperation));
+			};
+
+			Prop.ForAll(
+				Arb.From(_intGen.ListOf(10).Select(x => x.ToList())),
+				Arb.From(_intGen.ListOf(10).Select(x => x.ToList())),
+				assertReset)
+				.QuickCheckThrowOnFailure();
+		}
 	}
 }

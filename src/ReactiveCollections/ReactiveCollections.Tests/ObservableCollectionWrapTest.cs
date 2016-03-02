@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
 using FsCheck;
 using FsCheck.Experimental;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -93,6 +94,28 @@ namespace ReactiveCollections.Tests
 			};
 
 			Prop.ForAll(Arb.From(_intGen), Arb.From(_intGen), assertAddAndReplace).QuickCheckThrowOnFailure();
+		}
+
+		[TestMethod]
+		public void Reset()
+		{
+			IObservableCollection<int> collection = new ObservableCollection<int>();
+			IObservableReadOnlyCollection<int> actualOperation = collection.SelectRc(_selector).SelectRc(_selector);
+			IEnumerable<int> expectedOperation = collection.Select(_selector).Select(_selector);
+
+			Action<IReadOnlyList<int>, IReadOnlyList<int>> assertReset = (oldItems, newItems) =>
+			{
+				collection.Reset(oldItems);
+				Assert.IsTrue(Enumerable.SequenceEqual(expectedOperation, actualOperation));
+				collection.Reset(newItems);
+				Assert.IsTrue(Enumerable.SequenceEqual(expectedOperation, actualOperation));
+			};
+
+			Prop.ForAll(
+				Arb.From(_intGen.ListOf(10).Select(x => x.ToList())),
+				Arb.From(_intGen.ListOf(10).Select(x => x.ToList())),
+				assertReset)
+				.QuickCheckThrowOnFailure();
 		}
 	}
 }
