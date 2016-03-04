@@ -22,11 +22,12 @@ namespace ReactiveCollections.Implementation.Operations
 
 		public CollectionSelectOperation(
 			[NotNull] IObservable<IUpdateCollectionQuery<TIn>> source,
-			[NotNull] Func<TIn, TOut> selector) : base(source)
+			[NotNull] Func<TIn, TOut> selector)
 		{
 			selector.ArgumentNotNull(nameof(selector));
-
 			_selector = selector;
+
+			Subscibe(source);
 		}
 
 		protected override IEnumerable<IUpdateCollectionQuery<TOut>> OnInsert(ICollectionOnInsertArgs<TIn> arg)

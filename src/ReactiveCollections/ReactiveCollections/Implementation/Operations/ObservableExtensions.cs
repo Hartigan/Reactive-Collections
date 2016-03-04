@@ -61,5 +61,17 @@ namespace ReactiveCollections.Implementation.Operations
 				filter,
 				observableExtractor);
 		}
+
+		[NotNull]
+		public static IObservableReadOnlyCollection<TOut> SelectManyRc<TIn, TOut>(
+			[NotNull] this IObservableReadOnlyCollection<TIn> source,
+			[NotNull] Func<TIn, IObservableReadOnlyCollection<TOut>> selector)
+		{
+			return new CollectionSelectManyOperation<TIn,TOut>(
+				source.CollectionChanged.StartWith(UpdateCollectionQuery<TIn>.OnReset(
+					oldItems: Array.Empty<TIn>(),
+					newItems: source.ToList())),
+				selector);
+		}
 	}
 }

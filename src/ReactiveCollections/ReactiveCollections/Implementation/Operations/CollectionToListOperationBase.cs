@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reactive.Disposables;
 using System.Reactive.Subjects;
 using JetBrains.Annotations;
 using ReactiveCollections.Abstract.Collections;
@@ -17,11 +18,16 @@ namespace ReactiveCollections.Implementation.Operations
 		[NotNull]
 		private readonly IObservable<IUpdateListQuery<TOut>> _safetyObservable;
 		[NotNull]
-		private readonly IDisposable _sub;
+		private IDisposable _sub;
 
-		protected CollectionToListOperationBase([NotNull] IObservable<IUpdateListQuery<TIn>> source)
+		protected CollectionToListOperationBase()
 		{
 			_safetyObservable = _subject.ToKeepAliveObservable(this);
+			_sub = Disposable.Empty;
+		}
+
+		protected void Subscibe([NotNull] IObservable<IUpdateListQuery<TIn>> source)
+		{
 			_sub = source.WeakSubscribe(ProcessQuery);
 		}
 

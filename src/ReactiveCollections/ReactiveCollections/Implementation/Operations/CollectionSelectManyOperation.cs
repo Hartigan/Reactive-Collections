@@ -42,11 +42,12 @@ namespace ReactiveCollections.Implementation.Operations
 
 		public CollectionSelectManyOperation(
 			[NotNull] IObservable<IUpdateCollectionQuery<TIn>> source,
-			[NotNull] Func<TIn, IObservableReadOnlyCollection<TOut>> selector) : base(source)
+			[NotNull] Func<TIn, IObservableReadOnlyCollection<TOut>> selector)
 		{
 			_selector = selector;
+			_data.CollectionChanged.Subscribe(RaiseCollectionChanged);
 
-			_data.CollectionChanged.Subscribe(RaiseCollectionChanged); 
+			Subscibe(source);
 		}
 
 		public override IEnumerator<TOut> GetEnumerator() => _data.GetEnumerator();
@@ -132,11 +133,6 @@ namespace ReactiveCollections.Implementation.Operations
 			}
 			newList.Add(new Data(sub, newItem));
 
-			foreach (var item in newItem)
-			{
-				_data.Add(item);
-			}
-
 			return Enumerable.Empty<IUpdateCollectionQuery<TOut>>();
 		}
 
@@ -175,7 +171,7 @@ namespace ReactiveCollections.Implementation.Operations
 
 					foreach (var newItem in x.NewItems)
 					{
-						_data.Remove(newItem);
+						_data.Add(newItem);
 					}
 				},
 				onEmpty: x => { });

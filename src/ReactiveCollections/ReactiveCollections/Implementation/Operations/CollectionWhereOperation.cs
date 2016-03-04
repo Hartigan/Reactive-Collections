@@ -75,10 +75,12 @@ namespace ReactiveCollections.Implementation.Operations
 		public CollectionWhereOperation(
 			[NotNull] IObservable<IUpdateCollectionQuery<T>> source,
 			[NotNull] Func<T, bool> condition,
-			[NotNull] Func<T, IObservable<Unit>> getObservable) : base(source)
+			[NotNull] Func<T, IObservable<Unit>> getObservable)
 		{
 			_condition = condition;
 			_getObservable = getObservable;
+
+			Subscibe(source);
 		}
 
 		protected override IEnumerable<IUpdateCollectionQuery<T>> OnInsert(ICollectionOnInsertArgs<T> arg)

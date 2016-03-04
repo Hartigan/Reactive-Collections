@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using ReactiveCollections.Abstract.Collections;
 using ReactiveCollections.Abstract.Transactions;
 using ReactiveCollections.Abstract.Transactions.Arguments;
 using ReactiveCollections.Implementation.Transactions;
@@ -16,9 +15,11 @@ namespace ReactiveCollections.Implementation.Operations
 
 		public ListSelectOperation(
 			[NotNull] IObservable<IUpdateListQuery<TIn>> source,
-			[NotNull] Func<TIn, TOut> selector) : base(source)
+			[NotNull] Func<TIn, TOut> selector)
 		{
 			_selector = selector;
+
+			Subscibe(source);
 		}
 
 		protected override IEnumerable<IUpdateListQuery<TOut>> OnInsert(IListOnInsertArgs<TIn> arg)
