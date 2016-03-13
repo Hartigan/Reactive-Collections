@@ -26,7 +26,7 @@ namespace ReactiveCollections.Implementation.Operations
 			_sub = Disposable.Empty;
 		}
 
-		protected void Subscibe([NotNull] IObservable<IUpdateListQuery<TIn>> source)
+		protected void Subscibe([NotNull] IObservable<IUpdateCollectionQuery<TIn>> source)
 		{
 			_sub = source.WeakSubscribe(ProcessQuery);
 		}
@@ -39,7 +39,7 @@ namespace ReactiveCollections.Implementation.Operations
 				onInsert: OnInsert,
 				onRemove: OnRemove,
 				onReplace: OnReplace,
-				onReset: OnClear,
+				onReset: OnReset,
 				onEmpty: OnEmpty);
 
 			foreach (IUpdateListQuery<TOut> updateListQuery in queries)
@@ -52,7 +52,7 @@ namespace ReactiveCollections.Implementation.Operations
 		protected abstract IEnumerable<IUpdateListQuery<TOut>> OnEmpty([NotNull] ICollectionOnEmptyArgs arg);
 
 		[NotNull, ItemNotNull]
-		protected abstract IEnumerable<IUpdateListQuery<TOut>> OnClear([NotNull] ICollectionOnResetArgs<TIn> arg);
+		protected abstract IEnumerable<IUpdateListQuery<TOut>> OnReset([NotNull] ICollectionOnResetArgs<TIn> arg);
 
 		[NotNull, ItemNotNull]
 		protected abstract IEnumerable<IUpdateListQuery<TOut>> OnReplace([NotNull] ICollectionOnReplaceArgs<TIn> arg);

@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using JetBrains.Annotations;
 using ReactiveCollections.Abstract.Collections;
 using ReactiveCollections.Implementation.Transactions;
+using System.Collections.Generic;
 
 namespace ReactiveCollections.Implementation.Operations
 {
@@ -72,6 +73,22 @@ namespace ReactiveCollections.Implementation.Operations
 					oldItems: Array.Empty<TIn>(),
 					newItems: source.ToList())),
 				selector);
+		}
+
+		[NotNull]
+		public static IObservableReadOnlyList<TValue> SortRc<TValue, TKey>(
+			[NotNull] this IObservableReadOnlyCollection<TValue> source,
+			[NotNull] Func<TValue, TKey> selector,
+			[NotNull] IComparer<TKey> comparer,
+			[NotNull] Func<TValue, IObservable<Unit>> keyUpdater)
+		{
+			return new CollectionSortOperation<TValue, TKey>(
+				source.CollectionChanged.StartWith(UpdateCollectionQuery<TValue>.OnReset(
+					oldItems: Array.Empty<TValue>(),
+					newItems: source.ToList())),
+				selector,
+				comparer,
+				keyUpdater);
 		}
 	}
 }
