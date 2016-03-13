@@ -30,10 +30,18 @@ namespace ReactiveCollections.Tests
 		public ObservableCollectionSortTest()
 		{
 			int count = 0;
+			int current = 1;
+			int i = -1;
 
-			_intGen = Gen.Fresh(() => new BehaviorSubject<int>(count++));
+
+			_intGen = Gen.Fresh(() =>
+			{
+				count++;
+				current *= i;
+				return new BehaviorSubject<int>(count*current);
+			});
 			_selector = x => x.Value;
-			_filter = x => x.Value % 2 == 0;
+			_filter = x => x.Value % 3 != 0;
 			_getUpdater = x => x.Select(_ => Unit.Default);
 			_comparer = Comparer<int>.Default;
 		}
@@ -70,20 +78,20 @@ namespace ReactiveCollections.Tests
 		public void UpdateItem()
 		{
 			IObservableCollection<BehaviorSubject<int>> collection = new ObservableCollection<BehaviorSubject<int>>();
-			IObservableReadOnlyList<int> actualOperation = collection
+			IObservableReadOnlyList<BehaviorSubject<int>> actualOperation = collection
 				.WhereRc(_filter, _getUpdater)
 				.SortRc(x => x.Value, _comparer, _getUpdater)
-				.SelectRl(_selector);
-			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(_selector);
+				.SelectRl(x => x);
+			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(x => x.Value);
 
 			Action<BehaviorSubject<int>> assertAddAndUpdate = item =>
 			{
 				collection.Add(item);
-				Check(expectedOperation, actualOperation);
+				Check(expectedOperation, actualOperation.Select(x => x.Value).ToList());
 				item.OnNext(item.Value + 1);
-				Check(expectedOperation, actualOperation);
+				Check(expectedOperation, actualOperation.Select(x => x.Value).ToList());
 				item.OnNext(item.Value + 1);
-				Check(expectedOperation, actualOperation);
+				Check(expectedOperation, actualOperation.Select(x => x.Value).ToList());
 			};
 
 			Prop.ForAll(Arb.From(_intGen), assertAddAndUpdate).QuickCheckThrowOnFailure();
