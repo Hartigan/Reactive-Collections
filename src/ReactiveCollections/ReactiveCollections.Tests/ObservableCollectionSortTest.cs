@@ -23,7 +23,7 @@ namespace ReactiveCollections.Tests
 		[NotNull]
 		private readonly Func<BehaviorSubject<int>, bool> _filter;
 		[NotNull]
-		private readonly Func<BehaviorSubject<int>, IObservable<Unit>> _getUpdater;
+		private readonly Func<BehaviorSubject<int>, IObservable<BehaviorSubject<int>>> _getUpdater;
 		[NotNull]
 		private readonly IComparer<int> _comparer;
 
@@ -42,7 +42,7 @@ namespace ReactiveCollections.Tests
 			});
 			_selector = x => x.Value;
 			_filter = x => x.Value % 3 != 0;
-			_getUpdater = x => x.Select(_ => Unit.Default);
+			_getUpdater = x => x.Select(_ => x);
 			_comparer = Comparer<int>.Default;
 		}
 

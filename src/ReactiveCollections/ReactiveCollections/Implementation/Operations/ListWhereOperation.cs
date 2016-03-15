@@ -30,7 +30,7 @@ namespace ReactiveCollections.Implementation.Operations
 			public Criteria(
 				T item,
 				Func<T, bool> condition,
-				[NotNull] IObservable<Unit> criteriaChanged,
+				[NotNull] IObservable<T> criteriaChanged,
 				[NotNull] Action<Criteria> onItemUpdated)
 			{
 				_item = item;
@@ -41,7 +41,7 @@ namespace ReactiveCollections.Implementation.Operations
 				_sub = criteriaChanged.WeakSubscribe(UpdateValue);
 			}
 
-			private void UpdateValue(Unit arg)
+			private void UpdateValue(T arg)
 			{
 				Value = _condition(_item);
 			}
@@ -71,12 +71,12 @@ namespace ReactiveCollections.Implementation.Operations
 
 		private readonly List<Criteria> _data = new List<Criteria>();
 		private readonly Func<T, bool> _condition;
-		private readonly Func<T, IObservable<Unit>> _getObservable;
+		private readonly Func<T, IObservable<T>> _getObservable;
 
 		public ListWhereOperation(
 			[NotNull] IObservable<IUpdateListQuery<T>> source,
 			[NotNull] Func<T, bool> condition,
-			[NotNull] Func<T, IObservable<Unit>> getObservable)
+			[NotNull] Func<T, IObservable<T>> getObservable)
 		{
 			_condition = condition;
 			_getObservable = getObservable;

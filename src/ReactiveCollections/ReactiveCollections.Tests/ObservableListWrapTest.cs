@@ -38,8 +38,8 @@ namespace ReactiveCollections.Tests
 		{
 			IObservableList<int> collection = new ObservableList<int>();
 			IObservableReadOnlyList<int> actualOperation = collection
-				.SelectRl(_selector, _ => Observable.Never<Unit>())
-				.SelectRl(_selector, _ => Observable.Never<Unit>());
+				.SelectRl(_selector, _ => Observable.Never<int>())
+				.SelectRl(_selector, _ => Observable.Never<int>());
 			IEnumerable<int> expectedOperation = collection.Select(_selector).Select(_selector);
 
 			Action<int> assertAdd = item =>
@@ -57,8 +57,8 @@ namespace ReactiveCollections.Tests
 			Func<BehaviorSubject<int>, int> subjectToIntSelector = x => x.Value * 2;
 			IObservableList<BehaviorSubject<int>> collection = new ObservableList<BehaviorSubject<int>>();
 			IObservableReadOnlyCollection<int> actualOperation = collection
-				.SelectRl(subjectToIntSelector, x => x.Select(_ => Unit.Default))
-				.SelectRl(x => x, _ => Observable.Never<Unit>());
+				.SelectRl(subjectToIntSelector, x => x.Select(_ => x))
+				.SelectRl(x => x, _ => Observable.Never<int>());
 			IEnumerable<int> expectedOperation = collection.Select(subjectToIntSelector).Select(x => x);
 
 			Action<BehaviorSubject<int>> assertAdd = item =>
@@ -79,8 +79,8 @@ namespace ReactiveCollections.Tests
 		{
 			IObservableList<int> collection = new ObservableList<int>();
 			IObservableReadOnlyList<int> actualOperation = collection
-				.SelectRl(_selector, _ => Observable.Never<Unit>())
-				.SelectRl(_selector, _ => Observable.Never<Unit>());
+				.SelectRl(_selector, _ => Observable.Never<int>())
+				.SelectRl(_selector, _ => Observable.Never<int>());
 			IEnumerable<int> expectedOperation = collection.Select(_selector).Select(_selector);
 
 			Action<int> assertAddAndRemove = item =>
@@ -99,8 +99,8 @@ namespace ReactiveCollections.Tests
 		{
 			IObservableList<int> collection = new ObservableList<int>();
 			IObservableReadOnlyList<int> actualOperation = collection
-				.SelectRl(_selector, _ => Observable.Never<Unit>())
-				.SelectRl(_selector, _ => Observable.Never<Unit>());
+				.SelectRl(_selector, _ => Observable.Never<int>())
+				.SelectRl(_selector, _ => Observable.Never<int>());
 			IEnumerable<int> expectedOperation = collection.Select(_selector).Select(_selector);
 
 			Action<int, int, int> assertAddAndClear = (item1, item2, item3) =>
@@ -121,8 +121,8 @@ namespace ReactiveCollections.Tests
 		{
 			IObservableList<int> collection = new ObservableList<int>();
 			IObservableReadOnlyList<int> actualOperation = collection
-				.SelectRl(_selector, _ => Observable.Never<Unit>())
-				.SelectRl(_selector, _ => Observable.Never<Unit>());
+				.SelectRl(_selector, _ => Observable.Never<int>())
+				.SelectRl(_selector, _ => Observable.Never<int>());
 			IEnumerable<int> expectedOperation = collection.Select(_selector).Select(_selector);
 
 			Action<int, int> assertAddAndReplace = (oldItem, newItem) =>
@@ -141,8 +141,8 @@ namespace ReactiveCollections.Tests
 		{
 			IObservableList<int> collection = new ObservableList<int>();
 			IObservableReadOnlyList<int> actualOperation = collection
-				.SelectRl(_selector, _ => Observable.Never<Unit>())
-				.SelectRl(_selector, _ => Observable.Never<Unit>());
+				.SelectRl(_selector, _ => Observable.Never<int>())
+				.SelectRl(_selector, _ => Observable.Never<int>());
 			IEnumerable<int> expectedOperation = collection.Select(_selector).Select(_selector);
 
 			Action<int, int> assertInsert = (item, index) =>
@@ -160,8 +160,8 @@ namespace ReactiveCollections.Tests
 		{
 			IObservableList<int> collection = new ObservableList<int>();
 			IObservableReadOnlyList<int> actualOperation = collection
-				.SelectRl(_selector, _ => Observable.Never<Unit>())
-				.SelectRl(_selector, _ => Observable.Never<Unit>());
+				.SelectRl(_selector, _ => Observable.Never<int>())
+				.SelectRl(_selector, _ => Observable.Never<int>());
 			IEnumerable<int> expectedOperation = collection.Select(_selector).Select(_selector);
 
 			for (int i = 0; i < 1000; i++)
@@ -184,8 +184,8 @@ namespace ReactiveCollections.Tests
 		{
 			IObservableList<int> collection = new ObservableList<int>();
 			IObservableReadOnlyList<int> actualOperation = collection
-				.SelectRl(_selector, _ => Observable.Never<Unit>())
-				.SelectRl(_selector, _ => Observable.Never<Unit>());
+				.SelectRl(_selector, _ => Observable.Never<int>())
+				.SelectRl(_selector, _ => Observable.Never<int>());
 			IEnumerable<int> expectedOperation = collection.Select(_selector).Select(_selector);
 
 			for (int i = 0; i < 1000; i++)
@@ -208,8 +208,8 @@ namespace ReactiveCollections.Tests
 		{
 			IObservableList<int> collection = new ObservableList<int>();
 			IObservableReadOnlyList<int> actualOperation = collection
-				.SelectRl(_selector, _ => Observable.Never<Unit>())
-				.SelectRl(_selector, _ => Observable.Never<Unit>());
+				.SelectRl(_selector, _ => Observable.Never<int>())
+				.SelectRl(_selector, _ => Observable.Never<int>());
 			IEnumerable<int> expectedOperation = collection.Select(_selector).Select(_selector);
 
 			Action<IReadOnlyList<int>, IReadOnlyList<int>> assertReset = (oldItems, newItems) =>

@@ -38,7 +38,7 @@ namespace ReactiveCollections.Tests
 		private IObservableReadOnlyCollection<int> GetActual(
 			[NotNull] IObservableCollection<IObservableCollection<int>> collection)
 		{
-			return collection.SelectManyRc(_selectMany).SelectRc(_select, _ => Observable.Never<Unit>());
+			return collection.SelectManyRc(_selectMany).SelectRc(_select, _ => Observable.Never<int>());
 		}
 
 		[NotNull]

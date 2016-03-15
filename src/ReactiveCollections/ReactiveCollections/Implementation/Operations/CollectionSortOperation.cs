@@ -31,7 +31,7 @@ namespace ReactiveCollections.Implementation.Operations
 				TValue value,
 				TKey key,
 				Action<ItemContainer> onItemChanged,
-				IObservable<Unit> itemChanged) : this(value, key)
+				IObservable<TValue> itemChanged) : this(value, key)
 			{
 				_subscription = itemChanged.Subscribe(_ => onItemChanged(this));
 			}
@@ -66,14 +66,14 @@ namespace ReactiveCollections.Implementation.Operations
 		[NotNull] private readonly Func<TValue, TKey> _selector;
 		[NotNull] private readonly IComparer<TKey> _comparer;
 		[NotNull] private readonly IComparer<ItemContainer> _containerComparer;
-		[NotNull] private readonly Func<TValue, IObservable<Unit>> _keyUpdater;
+		[NotNull] private readonly Func<TValue, IObservable<TValue>> _keyUpdater;
 		[NotNull] private readonly List<ItemContainer> _list;
 
 		public CollectionSortOperation(
 			[NotNull] IObservable<IUpdateCollectionQuery<TValue>> source,
 			[NotNull] Func<TValue, TKey> selector,
 			[NotNull] IComparer<TKey> comparer,
-			[NotNull] Func<TValue, IObservable<Unit>> keyUpdater)
+			[NotNull] Func<TValue, IObservable<TValue>> keyUpdater)
 		{
 			_selector = selector;
 			_comparer = comparer;

@@ -20,7 +20,7 @@ namespace ReactiveCollections.Implementation.Operations
 				TOut value,
 				TIn key,
 				Action<ItemContainer> onItemChanged,
-				IObservable<Unit> itemChanged)
+				IObservable<TIn> itemChanged)
 			{
 				Value = value;
 				Key = key;
@@ -38,13 +38,13 @@ namespace ReactiveCollections.Implementation.Operations
 		}
 
 		[NotNull] private readonly Func<TIn, TOut> _selector;
-		[NotNull] private readonly Func<TIn, IObservable<Unit>> _updaterSelector;
+		[NotNull] private readonly Func<TIn, IObservable<TIn>> _updaterSelector;
 		[NotNull] private readonly List<ItemContainer> _data = new List<ItemContainer>(); 
 
 		public ListSelectOperation(
 			[NotNull] IObservable<IUpdateListQuery<TIn>> source,
 			[NotNull] Func<TIn, TOut> selector,
-			[NotNull] Func<TIn, IObservable<Unit>> updaterSelector)
+			[NotNull] Func<TIn, IObservable<TIn>> updaterSelector)
 		{
 			_selector = selector;
 			_updaterSelector = updaterSelector;

@@ -25,7 +25,7 @@ namespace ReactiveCollections.Tests
 		[NotNull]
 		private readonly Func<BehaviorSubject<int>, bool> _filter;
 		[NotNull]
-		private readonly Func<BehaviorSubject<int>, IObservable<Unit>> _getUpdater;
+		private readonly Func<BehaviorSubject<int>, IObservable<BehaviorSubject<int>>> _getUpdater;
 
 		public ObservableListWhereTest()
 		{
@@ -33,7 +33,7 @@ namespace ReactiveCollections.Tests
 			_intGen = Gen.Fresh(() => new BehaviorSubject<int>(count++));
 			_selector = x => x.Value;
 			_filter = x => x.Value % 2 == 0;
-			_getUpdater = x => x.Select(_ => Unit.Default);
+			_getUpdater = x => x.Select(_ => x);
 			_indexGen = Arb.Generate<int>().Where(x => x >= 0);
 		}
 

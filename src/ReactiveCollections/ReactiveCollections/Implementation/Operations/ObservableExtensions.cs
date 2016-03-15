@@ -15,7 +15,7 @@ namespace ReactiveCollections.Implementation.Operations
 		public static IObservableReadOnlyCollection<TOut> SelectRc<TIn, TOut>(
 			[NotNull] this IObservableReadOnlyCollection<TIn> source,
 			[NotNull] Func<TIn, TOut> selector,
-			[NotNull] Func<TIn, IObservable<Unit>> updaterSelector)
+			[NotNull] Func<TIn, IObservable<TIn>> updaterSelector)
 		{
 			return new CollectionSelectOperation<TIn,TOut>(
 				source.CollectionChanged.StartWith(UpdateCollectionQuery<TIn>.OnReset(
@@ -29,7 +29,7 @@ namespace ReactiveCollections.Implementation.Operations
 		public static IObservableReadOnlyList<TOut> SelectRl<TIn, TOut>(
 			[NotNull] this IObservableReadOnlyList<TIn> source,
 			[NotNull] Func<TIn, TOut> selector,
-			[NotNull] Func<TIn, IObservable<Unit>> updaterSelector)
+			[NotNull] Func<TIn, IObservable<TIn>> updaterSelector)
 		{
 			return new ListSelectOperation<TIn, TOut>(
 				source.ListChanged.StartWith(UpdateListQuery<TIn>.OnReset(
@@ -43,7 +43,7 @@ namespace ReactiveCollections.Implementation.Operations
 		public static IObservableReadOnlyCollection<T> WhereRc<T>(
 			[NotNull] this IObservableReadOnlyCollection<T> source,
 			[NotNull] Func<T, bool> filter,
-			[NotNull] Func<T, IObservable<Unit>> observableExtractor)
+			[NotNull] Func<T, IObservable<T>> observableExtractor)
 		{
 			return new CollectionWhereOperation<T>(
 				source.CollectionChanged.StartWith(UpdateCollectionQuery<T>.OnReset(
@@ -57,7 +57,7 @@ namespace ReactiveCollections.Implementation.Operations
 		public static IObservableReadOnlyList<T> WhereRl<T>(
 			[NotNull] this IObservableReadOnlyList<T> source,
 			[NotNull] Func<T, bool> filter,
-			[NotNull] Func<T, IObservable<Unit>> observableExtractor)
+			[NotNull] Func<T, IObservable<T>> observableExtractor)
 		{
 			return new ListWhereOperation<T>(
 				source.ListChanged.StartWith(UpdateListQuery<T>.OnReset(
@@ -84,7 +84,7 @@ namespace ReactiveCollections.Implementation.Operations
 			[NotNull] this IObservableReadOnlyCollection<TValue> source,
 			[NotNull] Func<TValue, TKey> selector,
 			[NotNull] IComparer<TKey> comparer,
-			[NotNull] Func<TValue, IObservable<Unit>> keyUpdater)
+			[NotNull] Func<TValue, IObservable<TValue>> keyUpdater)
 		{
 			return new CollectionSortOperation<TValue, TKey>(
 				source.CollectionChanged.StartWith(UpdateCollectionQuery<TValue>.OnReset(

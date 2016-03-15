@@ -21,7 +21,7 @@ namespace ReactiveCollections.Implementation.Operations
 				TOut value,
 				TIn key,
 				Action<ItemContainer> onItemChanged,
-				IObservable<Unit> itemChanged)
+				IObservable<TIn> itemChanged)
 			{
 				Value = value;
 				Key = key;
@@ -42,7 +42,7 @@ namespace ReactiveCollections.Implementation.Operations
 		private readonly Func<TIn, TOut> _selector;
 
 		[NotNull]
-		private readonly Func<TIn, IObservable<Unit>> _updaterSelector;
+		private readonly Func<TIn, IObservable<TIn>> _updaterSelector;
 
 		[NotNull]
 		private Dictionary<TIn, LinkedList<ItemContainer>> _map = new Dictionary<TIn, LinkedList<ItemContainer>>();
@@ -52,7 +52,7 @@ namespace ReactiveCollections.Implementation.Operations
 		public CollectionSelectOperation(
 			[NotNull] IObservable<IUpdateCollectionQuery<TIn>> source,
 			[NotNull] Func<TIn, TOut> selector,
-			[NotNull] Func<TIn, IObservable<Unit>> updaterSelector)
+			[NotNull] Func<TIn, IObservable<TIn>> updaterSelector)
 		{
 			selector.ArgumentNotNull(nameof(selector));
 			_selector = selector;
