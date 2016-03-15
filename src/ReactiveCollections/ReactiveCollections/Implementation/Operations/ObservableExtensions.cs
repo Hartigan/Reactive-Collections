@@ -28,13 +28,15 @@ namespace ReactiveCollections.Implementation.Operations
 		[NotNull]
 		public static IObservableReadOnlyList<TOut> SelectRl<TIn, TOut>(
 			[NotNull] this IObservableReadOnlyList<TIn> source,
-			[NotNull] Func<TIn, TOut> selector)
+			[NotNull] Func<TIn, TOut> selector,
+			[NotNull] Func<TIn, IObservable<Unit>> updaterSelector)
 		{
 			return new ListSelectOperation<TIn, TOut>(
 				source.ListChanged.StartWith(UpdateListQuery<TIn>.OnReset(
 					oldItems: Array.Empty<TIn>(),
 					newItems: source.ToList())),
-				selector);
+				selector,
+				updaterSelector);
 		}
 
 		[NotNull]

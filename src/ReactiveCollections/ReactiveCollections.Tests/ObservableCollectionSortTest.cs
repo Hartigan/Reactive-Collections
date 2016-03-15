@@ -62,7 +62,7 @@ namespace ReactiveCollections.Tests
 			IObservableReadOnlyList<int> actualOperation = collection
 				.WhereRc(_filter, _getUpdater)
 				.SortRc(x => x.Value, _comparer, _getUpdater)
-				.SelectRl(_selector);
+				.SelectRl(_selector, _getUpdater);
 			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(_selector);
 
 			Action<BehaviorSubject<int>> assertAdd = item =>
@@ -78,20 +78,20 @@ namespace ReactiveCollections.Tests
 		public void UpdateItem()
 		{
 			IObservableCollection<BehaviorSubject<int>> collection = new ObservableCollection<BehaviorSubject<int>>();
-			IObservableReadOnlyList<BehaviorSubject<int>> actualOperation = collection
-				.WhereRc(_filter, _getUpdater)
-				.SortRc(x => x.Value, _comparer, _getUpdater)
-				.SelectRl(x => x);
-			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(x => x.Value);
+			IObservableReadOnlyList<int> actualOperation = collection
+							.WhereRc(_filter, _getUpdater)
+							.SortRc(x => x.Value, _comparer, _getUpdater)
+							.SelectRl(_selector, _getUpdater);
+			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(_selector);
 
 			Action<BehaviorSubject<int>> assertAddAndUpdate = item =>
 			{
 				collection.Add(item);
-				Check(expectedOperation, actualOperation.Select(x => x.Value).ToList());
+				Check(expectedOperation, actualOperation);
 				item.OnNext(item.Value + 1);
-				Check(expectedOperation, actualOperation.Select(x => x.Value).ToList());
+				Check(expectedOperation, actualOperation);
 				item.OnNext(item.Value + 1);
-				Check(expectedOperation, actualOperation.Select(x => x.Value).ToList());
+				Check(expectedOperation, actualOperation);
 			};
 
 			Prop.ForAll(Arb.From(_intGen), assertAddAndUpdate).QuickCheckThrowOnFailure();
@@ -104,7 +104,7 @@ namespace ReactiveCollections.Tests
 			IObservableReadOnlyList<int> actualOperation = collection
 				.WhereRc(_filter, _getUpdater)
 				.SortRc(x => x.Value, _comparer, _getUpdater)
-				.SelectRl(_selector);
+				.SelectRl(_selector, _getUpdater);
 			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(_selector);
 
 			Action<BehaviorSubject<int>> assertAddAndRemove = item =>
@@ -125,7 +125,7 @@ namespace ReactiveCollections.Tests
 			IObservableReadOnlyList<int> actualOperation = collection
 				.WhereRc(_filter, _getUpdater)
 				.SortRc(x => x.Value, _comparer, _getUpdater)
-				.SelectRl(_selector);
+				.SelectRl(_selector, _getUpdater);
 			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(_selector);
 
 			Action<BehaviorSubject<int>, BehaviorSubject<int>, BehaviorSubject<int>> assertAddAndClear = (item1, item2, item3) =>
@@ -148,7 +148,7 @@ namespace ReactiveCollections.Tests
 			IObservableReadOnlyList<int> actualOperation = collection
 				.WhereRc(_filter, _getUpdater)
 				.SortRc(x => x.Value, _comparer, _getUpdater)
-				.SelectRl(_selector);
+				.SelectRl(_selector, _getUpdater);
 			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(_selector);
 
 			Action<BehaviorSubject<int>, BehaviorSubject<int>> assertAddAndReplace = (oldItem, newItem) =>
@@ -169,7 +169,7 @@ namespace ReactiveCollections.Tests
 			IObservableReadOnlyList<int> actualOperation = collection
 				.WhereRc(_filter, _getUpdater)
 				.SortRc(x => x.Value, _comparer, _getUpdater)
-				.SelectRl(_selector);
+				.SelectRl(_selector, _getUpdater);
 			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(_selector);
 
 			Action<IReadOnlyList<BehaviorSubject<int>>, IReadOnlyList<BehaviorSubject<int>>> assertReset = (oldItems, newItems) =>
