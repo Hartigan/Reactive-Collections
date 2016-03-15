@@ -28,7 +28,7 @@ namespace ReactiveCollections.Implementation.Operations
 				_subscription = itemChanged.Subscribe(_ => onItemChanged(this));
 			}
 
-			public TOut Value { get; }
+			public TOut Value { get; set; }
 
 			public TIn Key { get; }
 
@@ -63,7 +63,13 @@ namespace ReactiveCollections.Implementation.Operations
 
 		private void OnItemChanged([NotNull] ItemContainer itemContainer)
 		{
-			
+			var oldItem = itemContainer.Value;
+			var newItem = _selector(itemContainer.Key);
+
+			if (EqualityComparer<TOut>.Default.Equals(oldItem, newItem)) return;
+
+			itemContainer.Value = newItem;
+			RaiseCollectionChanged(UpdateCollectionQuery<TOut>.OnReplace(oldItem, newItem));
 		}
 
 		protected override IEnumerable<IUpdateCollectionQuery<TOut>> OnInsert(ICollectionOnInsertArgs<TIn> arg)

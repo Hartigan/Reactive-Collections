@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using FsCheck;
 using FsCheck.Experimental;
+using JetBrains.Annotations;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using ReactiveCollections.Abstract.Collections;
 using ReactiveCollections.Implementation.Collections;
@@ -26,6 +27,15 @@ namespace ReactiveCollections.Tests
 			_selector = x => x*2;
 		}
 
+		private void Check([NotNull] IEnumerable<int> expected, [NotNull] IEnumerable<int> actual)
+		{
+			var expectedList = expected.ToList();
+			expectedList.Sort();
+			var actualList = actual.ToList();
+			actualList.Sort();
+			Assert.IsTrue(Enumerable.SequenceEqual(expectedList, actualList));
+		}
+
 		[TestMethod]
 		public void Add()
 		{
@@ -38,7 +48,7 @@ namespace ReactiveCollections.Tests
 			Action<int> assertAdd = item =>
 			{
 				collection.Add(item);
-				Assert.IsTrue(Enumerable.SequenceEqual(expectedOperation, actualOperation));
+				Check(expectedOperation, actualOperation);
 			};
 
 			Prop.ForAll(Arb.From(_intGen), assertAdd).QuickCheckThrowOnFailure();
@@ -57,7 +67,11 @@ namespace ReactiveCollections.Tests
 			Action<BehaviorSubject<int>> assertAdd = item =>
 			{
 				collection.Add(item);
-				Assert.IsTrue(Enumerable.SequenceEqual(expectedOperation, actualOperation));
+				Check(expectedOperation, actualOperation);
+				item.OnNext(item.Value + 1);
+				Check(expectedOperation, actualOperation);
+				item.OnNext(item.Value + 1);
+				Check(expectedOperation, actualOperation);
 			};
 
 			Prop.ForAll(Arb.From(_intGen.Select(x => new BehaviorSubject<int>(x))), assertAdd).QuickCheckThrowOnFailure();
@@ -75,9 +89,9 @@ namespace ReactiveCollections.Tests
 			Action<int> assertAddAndRemove = item =>
 			{
 				collection.Add(item);
-				Assert.IsTrue(Enumerable.SequenceEqual(expectedOperation, actualOperation));
+				Check(expectedOperation, actualOperation);
 				collection.Remove(item);
-				Assert.IsTrue(Enumerable.SequenceEqual(expectedOperation, actualOperation));
+				Check(expectedOperation, actualOperation);
 			};
 
 			Prop.ForAll(Arb.From(_intGen), assertAddAndRemove).QuickCheckThrowOnFailure();
@@ -97,9 +111,9 @@ namespace ReactiveCollections.Tests
 				collection.Add(item1);
 				collection.Add(item2);
 				collection.Add(item3);
-				Assert.IsTrue(Enumerable.SequenceEqual(expectedOperation, actualOperation));
+				Check(expectedOperation, actualOperation);
 				collection.Clear();
-				Assert.IsTrue(Enumerable.SequenceEqual(expectedOperation, actualOperation));
+				Check(expectedOperation, actualOperation);
 			};
 
 			Prop.ForAll(Arb.From(_intGen), Arb.From(_intGen), Arb.From(_intGen), assertAddAndClear).QuickCheckThrowOnFailure();
@@ -117,9 +131,9 @@ namespace ReactiveCollections.Tests
 			Action<int, int> assertAddAndReplace = (oldItem, newItem) =>
 			{
 				collection.Add(oldItem);
-				Assert.IsTrue(Enumerable.SequenceEqual(expectedOperation, actualOperation));
+				Check(expectedOperation, actualOperation);
 				collection.Replace(oldItem, newItem);
-				Assert.IsTrue(Enumerable.SequenceEqual(expectedOperation, actualOperation));
+				Check(expectedOperation, actualOperation);
 			};
 
 			Prop.ForAll(Arb.From(_intGen), Arb.From(_intGen), assertAddAndReplace).QuickCheckThrowOnFailure();
@@ -137,9 +151,9 @@ namespace ReactiveCollections.Tests
 			Action<IReadOnlyList<int>, IReadOnlyList<int>> assertReset = (oldItems, newItems) =>
 			{
 				collection.Reset(oldItems);
-				Assert.IsTrue(Enumerable.SequenceEqual(expectedOperation, actualOperation));
+				Check(expectedOperation, actualOperation);
 				collection.Reset(newItems);
-				Assert.IsTrue(Enumerable.SequenceEqual(expectedOperation, actualOperation));
+				Check(expectedOperation, actualOperation);
 			};
 
 			Prop.ForAll(
