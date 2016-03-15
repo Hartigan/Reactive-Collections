@@ -35,7 +35,9 @@ namespace ReactiveCollections.Tests
 		public void Add()
 		{
 			IObservableCollection<BehaviorSubject<int>> collection = new ObservableCollection<BehaviorSubject<int>>();
-			IObservableReadOnlyCollection<int> actualOperation = collection.WhereRc(_filter, _getUpdater).SelectRc(_selector);
+			IObservableReadOnlyCollection<int> actualOperation = collection
+				.WhereRc(_filter, _getUpdater)
+				.SelectRc(_selector, x => x.Select(_ => Unit.Default));
 			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(_selector);
 
 			Action<BehaviorSubject<int>> assertAdd = item =>
@@ -51,7 +53,9 @@ namespace ReactiveCollections.Tests
 		public void UpdateItem()
 		{
 			IObservableCollection<BehaviorSubject<int>> collection = new ObservableCollection<BehaviorSubject<int>>();
-			IObservableReadOnlyCollection<int> actualOperation = collection.WhereRc(_filter, _getUpdater).SelectRc(_selector);
+			IObservableReadOnlyCollection<int> actualOperation = collection
+				.WhereRc(_filter, _getUpdater)
+				.SelectRc(_selector, x => x.Select(_ => Unit.Default));
 			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(_selector);
 
 			Action<BehaviorSubject<int>> assertAddAndUpdate = item =>
@@ -71,7 +75,9 @@ namespace ReactiveCollections.Tests
 		public void Remove()
 		{
 			IObservableCollection<BehaviorSubject<int>> collection = new ObservableCollection<BehaviorSubject<int>>();
-			IObservableReadOnlyCollection<int> actualOperation = collection.WhereRc(_filter, _getUpdater).SelectRc(_selector);
+			IObservableReadOnlyCollection<int> actualOperation = collection
+				.WhereRc(_filter, _getUpdater)
+				.SelectRc(_selector, x => x.Select(_ => Unit.Default));
 			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(_selector);
 
 			Action<BehaviorSubject<int>> assertAddAndRemove = item =>
@@ -89,7 +95,9 @@ namespace ReactiveCollections.Tests
 		public void Clear()
 		{
 			IObservableCollection<BehaviorSubject<int>> collection = new ObservableCollection<BehaviorSubject<int>>();
-			IObservableReadOnlyCollection<int> actualOperation = collection.WhereRc(_filter, _getUpdater).SelectRc(_selector);
+			IObservableReadOnlyCollection<int> actualOperation = collection
+				.WhereRc(_filter, _getUpdater)
+				.SelectRc(_selector, x => x.Select(_ => Unit.Default));
 			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(_selector);
 
 			Action<BehaviorSubject<int>, BehaviorSubject<int>, BehaviorSubject<int>> assertAddAndClear = (item1, item2, item3) =>
@@ -109,7 +117,9 @@ namespace ReactiveCollections.Tests
 		public void Replace()
 		{
 			IObservableCollection<BehaviorSubject<int>> collection = new ObservableCollection<BehaviorSubject<int>>();
-			IObservableReadOnlyCollection<int> actualOperation = collection.WhereRc(_filter, _getUpdater).SelectRc(_selector);
+			IObservableReadOnlyCollection<int> actualOperation = collection
+				.WhereRc(_filter, _getUpdater)
+				.SelectRc(_selector, x => x.Select(_ => Unit.Default));
 			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(_selector);
 
 			Action<BehaviorSubject<int>, BehaviorSubject<int>> assertAddAndReplace = (oldItem, newItem) =>
@@ -127,7 +137,9 @@ namespace ReactiveCollections.Tests
 		public void Reset()
 		{
 			IObservableCollection<BehaviorSubject<int>> collection = new ObservableCollection<BehaviorSubject<int>>();
-			IObservableReadOnlyCollection<int> actualOperation = collection.WhereRc(_filter, _getUpdater).SelectRc(_selector);
+			IObservableReadOnlyCollection<int> actualOperation = collection
+				.WhereRc(_filter, _getUpdater)
+				.SelectRc(_selector, x => x.Select(_ => Unit.Default));
 			IEnumerable<int> expectedOperation = collection.Where(_filter).Select(_selector);
 
 			Action<IReadOnlyList<BehaviorSubject<int>>, IReadOnlyList<BehaviorSubject<int>>> assertReset= (oldItems, newItems) =>

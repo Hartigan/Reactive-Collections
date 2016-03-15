@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using FsCheck;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -36,7 +38,7 @@ namespace ReactiveCollections.Tests
 		private IObservableReadOnlyCollection<int> GetActual(
 			[NotNull] IObservableCollection<IObservableCollection<int>> collection)
 		{
-			return collection.SelectManyRc(_selectMany).SelectRc(_select);
+			return collection.SelectManyRc(_selectMany).SelectRc(_select, _ => Observable.Never<Unit>());
 		}
 
 		[NotNull]
