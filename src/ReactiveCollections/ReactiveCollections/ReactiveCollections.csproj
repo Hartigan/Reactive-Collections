@@ -59,6 +59,8 @@
     <Compile Include="Abstract\Transactions\ITransactional.cs" />
     <Compile Include="Abstract\Transactions\IUpdateListQuery.cs" />
     <Compile Include="Abstract\Transactions\IUpdateCollectionQuery.cs" />
+    <Compile Include="Domain\ObservableValue.cs" />
+    <Compile Include="Domain\ValueChangedArgs.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\InternalExtensions.cs" />
     <Compile Include="Implementation\Collections\ObservableList.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Implementation\Operations\CollectionToListOperationBase.cs" />
     <Compile Include="Implementation\Operations\CollectionWhereOperation.cs" />
     <Compile Include="Implementation\Operations\ListSelectOperation.cs" />
+    <Compile Include="Implementation\Operations\ListSkipAndTakeOperation.cs" />
     <Compile Include="Implementation\Operations\ListToListOperationBase.cs" />
     <Compile Include="Implementation\Operations\ListWhereOperation.cs" />
     <Compile Include="Implementation\Operations\ObservableExtensions.cs" />

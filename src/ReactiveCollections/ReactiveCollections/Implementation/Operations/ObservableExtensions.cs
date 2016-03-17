@@ -6,6 +6,8 @@ using JetBrains.Annotations;
 using ReactiveCollections.Abstract.Collections;
 using ReactiveCollections.Implementation.Transactions;
 using System.Collections.Generic;
+using ReactiveCollections.Abstract.Transactions;
+using ReactiveCollections.Domain;
 
 namespace ReactiveCollections.Implementation.Operations
 {
@@ -18,9 +20,7 @@ namespace ReactiveCollections.Implementation.Operations
 			[NotNull] Func<TIn, IObservable<TIn>> updaterSelector)
 		{
 			return new CollectionSelectOperation<TIn,TOut>(
-				source.CollectionChanged.StartWith(UpdateCollectionQuery<TIn>.OnReset(
-					oldItems: Array.Empty<TIn>(),
-					newItems: source.ToList())),
+				SourceWithInitialization(source),
 				selector,
 				updaterSelector);
 		}
@@ -32,9 +32,7 @@ namespace ReactiveCollections.Implementation.Operations
 			[NotNull] Func<TIn, IObservable<TIn>> updaterSelector)
 		{
 			return new ListSelectOperation<TIn, TOut>(
-				source.ListChanged.StartWith(UpdateListQuery<TIn>.OnReset(
-					oldItems: Array.Empty<TIn>(),
-					newItems: source.ToList())),
+				SourceWithInitialization(source),
 				selector,
 				updaterSelector);
 		}
@@ -46,9 +44,7 @@ namespace ReactiveCollections.Implementation.Operations
 			[NotNull] Func<T, IObservable<T>> observableExtractor)
 		{
 			return new CollectionWhereOperation<T>(
-				source.CollectionChanged.StartWith(UpdateCollectionQuery<T>.OnReset(
-					oldItems: Array.Empty<T>(),
-					newItems: source.ToList())),
+				SourceWithInitialization(source),
 				filter,
 				observableExtractor);
 		}
@@ -60,9 +56,7 @@ namespace ReactiveCollections.Implementation.Operations
 			[NotNull] Func<T, IObservable<T>> observableExtractor)
 		{
 			return new ListWhereOperation<T>(
-				source.ListChanged.StartWith(UpdateListQuery<T>.OnReset(
-					oldItems: Array.Empty<T>(),
-					newItems: source.ToList())),
+				SourceWithInitialization(source),
 				filter,
 				observableExtractor);
 		}
@@ -73,9 +67,7 @@ namespace ReactiveCollections.Implementation.Operations
 			[NotNull] Func<TIn, IObservableReadOnlyCollection<TOut>> selector)
 		{
 			return new CollectionSelectManyOperation<TIn,TOut>(
-				source.CollectionChanged.StartWith(UpdateCollectionQuery<TIn>.OnReset(
-					oldItems: Array.Empty<TIn>(),
-					newItems: source.ToList())),
+				SourceWithInitialization(source),
 				selector);
 		}
 
@@ -87,12 +79,40 @@ namespace ReactiveCollections.Implementation.Operations
 			[NotNull] Func<TValue, IObservable<TValue>> keyUpdater)
 		{
 			return new CollectionSortOperation<TValue, TKey>(
-				source.CollectionChanged.StartWith(UpdateCollectionQuery<TValue>.OnReset(
-					oldItems: Array.Empty<TValue>(),
-					newItems: source.ToList())),
+				SourceWithInitialization(source),
 				selector,
 				comparer,
 				keyUpdater);
+		}
+
+		[NotNull]
+		public static IObservableReadOnlyList<T> SkipAndTakeRl<T>(
+			[NotNull] this IObservableReadOnlyList<T> source,
+			[NotNull] ObservableValue<int> skip,
+			[NotNull] ObservableValue<int> take)
+		{
+			return new ListSkipAndTakeOperation<T>(
+				SourceWithInitialization(source),
+				skip,
+				take);
+		}
+
+		[NotNull]
+		private static IObservable<IUpdateListQuery<T>> SourceWithInitialization<T>(
+			[NotNull] IObservableReadOnlyList<T> source)
+		{
+			return source.ListChanged.StartWith(UpdateListQuery<T>.OnReset(
+				oldItems: Array.Empty<T>(),
+				newItems: source.ToList()));
+		}
+
+		[NotNull]
+		private static IObservable<IUpdateCollectionQuery<T>> SourceWithInitialization<T>(
+			[NotNull] IObservableReadOnlyCollection<T> source)
+		{
+			return source.CollectionChanged.StartWith(UpdateListQuery<T>.OnReset(
+				oldItems: Array.Empty<T>(),
+				newItems: source.ToList()));
 		}
 	}
 }
