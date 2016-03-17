@@ -101,6 +101,7 @@
     <Compile Include="ObservableCollectionTest.cs" />
     <Compile Include="ObservableCollectionWhereTest.cs" />
     <Compile Include="ObservableCollectionWrapTest.cs" />
+    <Compile Include="ObservableListSkipAndTakeTest.cs" />
     <Compile Include="ObservableListTest.cs" />
     <Compile Include="ObservableListWhereTest.cs" />
     <Compile Include="ObservableListWrapTest.cs" />

@@ -61,31 +61,33 @@ namespace ReactiveCollections.Implementation.Operations
 
 		private void OnSkipChanged([NotNull] ValueChangedArgs<int> args)
 		{
+			if (_take == 0) return;
+
 			if (args.NewValue > args.OldValue)
 			{
-				for (int i = args.OldValue; i < args.NewValue && i < _data.Count; i++)
+				for (int i = args.OldValue; i < Math.Min(Math.Min(args.NewValue, args.OldValue + _take), _data.Count); i++)
 				{
 					var sourceIndex = i;
 					RaiseListChanged(UpdateListQuery<T>.OnRemove(_data[sourceIndex], 0));
 				}
 
-				for (int i = args.OldValue + _take; i < args.OldValue + _take && i < _data.Count; i++)
+				for (int i = Math.Max(args.OldValue + _take, args.NewValue); i < Math.Min(args.NewValue + _take, _data.Count); i++)
 				{
 					var sourceIndex = i;
-					var actualIndex = ConvertSourceToActualIndex(sourceIndex);
+					var actualIndex = ConvertSourceToActualIndex(i);
 					RaiseListChanged(UpdateListQuery<T>.OnInsert(_data[sourceIndex], actualIndex));
 				}
 			}
 			else
 			{
-				for (int i = Math.Min(args.OldValue + _take, _data.Count) - 1; i >= args.NewValue + _take; i++)
+				for (int i = Math.Min(args.OldValue + _take, _data.Count) - 1; i >= Math.Max(args.NewValue + _take, args.OldValue); i--)
 				{
 					var sourceIndex = i;
 					var actualIndex = i - args.OldValue;
 					RaiseListChanged(UpdateListQuery<T>.OnRemove(_data[sourceIndex], actualIndex));
 				}
 
-				for (int i = args.OldValue - 1; i >= args.NewValue; i++)
+				for (int i = Math.Min(args.OldValue, args.NewValue + _take) - 1; i >= args.NewValue; i--)
 				{
 					var sourceIndex = i;
 					RaiseListChanged(UpdateListQuery<T>.OnInsert(_data[sourceIndex], 0));
@@ -95,9 +97,11 @@ namespace ReactiveCollections.Implementation.Operations
 
 		protected override IEnumerable<IUpdateListQuery<T>> OnInsert(IListOnInsertArgs<T> arg)
 		{
-			List<IUpdateListQuery<T>> result = new List<IUpdateListQuery<T>>(2);
-
 			_data.Insert(arg.Index, arg.Item);
+
+			if (_take == 0) return Enumerable.Empty<IUpdateListQuery<T>>();
+
+			List<IUpdateListQuery<T>> result = new List<IUpdateListQuery<T>>(2);
 
 			if (arg.Index < _skip)
 			{
@@ -108,9 +112,9 @@ namespace ReactiveCollections.Implementation.Operations
 					result.Add(UpdateListQuery<T>.OnRemove(_data[sourceIndexForRemove], ConvertSourceToActualIndex(sourceIndexForRemove) - 1));
 				}
 
-				if (_skip + 1 < _data.Count)
+				if (_skip < _data.Count)
 				{
-					result.Add(UpdateListQuery<T>.OnInsert(_data[_skip + 1], 0));
+					result.Add(UpdateListQuery<T>.OnInsert(_data[_skip], 0));
 				}
 			}
 			else if (arg.Index >= _skip + _take)
@@ -163,10 +167,13 @@ namespace ReactiveCollections.Implementation.Operations
 
 		protected override IEnumerable<IUpdateListQuery<T>> OnMove(IListOnMoveArgs<T> arg)
 		{
-			List<IUpdateListQuery<T>> result = new List<IUpdateListQuery<T>>(2);
-			var skipAndTake = _skip + _take;
 			_data.RemoveAt(arg.OldIndex);
 			_data.Insert(arg.NewIndex, arg.Item);
+
+			if (_take == 0) return Enumerable.Empty<IUpdateListQuery<T>>();
+
+			List<IUpdateListQuery<T>> result = new List<IUpdateListQuery<T>>(2);
+			var skipAndTake = _skip + _take;
 
 			if (arg.OldIndex < _skip && arg.NewIndex < _skip)
 			{
@@ -209,6 +216,8 @@ namespace ReactiveCollections.Implementation.Operations
 		{
 			_data[arg.Index] = arg.NewItem;
 
+			if (_take == 0) return Enumerable.Empty<IUpdateListQuery<T>>();
+
 			if (arg.Index < _skip)
 			{
 			}
@@ -225,9 +234,11 @@ namespace ReactiveCollections.Implementation.Operations
 
 		protected override IEnumerable<IUpdateListQuery<T>> OnRemove(IListOnRemoveArgs<T> arg)
 		{
-			List<IUpdateListQuery<T>> result = new List<IUpdateListQuery<T>>(2);
-
 			_data.RemoveAt(arg.Index);
+
+			if (_take == 0) return Enumerable.Empty<IUpdateListQuery<T>>();
+
+			List<IUpdateListQuery<T>> result = new List<IUpdateListQuery<T>>(2);
 
 			if (arg.Index < _skip)
 			{
@@ -235,7 +246,7 @@ namespace ReactiveCollections.Implementation.Operations
 
 				if (sourceIndexForRemove < _data.Count && sourceIndexForRemove >= 0)
 				{
-					result.Add(UpdateListQuery<T>.OnInsert(_data[sourceIndexForRemove], 0));
+					result.Add(UpdateListQuery<T>.OnRemove(_data[sourceIndexForRemove], 0));
 				}
 
 				var sourceIndexForInsert = _skip + _take - 1;
