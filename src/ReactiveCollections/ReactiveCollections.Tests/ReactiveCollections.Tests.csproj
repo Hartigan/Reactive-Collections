@@ -96,6 +96,7 @@
     <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ObservableCollectionGroupByTest.cs" />
     <Compile Include="ObservableCollectionSelectManyTest.cs" />
     <Compile Include="ObservableCollectionSortTest.cs" />
     <Compile Include="ObservableCollectionTest.cs" />
