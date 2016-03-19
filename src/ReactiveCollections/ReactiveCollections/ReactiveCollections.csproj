@@ -41,7 +41,9 @@
   <ItemGroup>
     <Compile Include="Abstract\Collections\INotifyListChanged.cs" />
     <Compile Include="Abstract\Collections\INotifyCollectionChanged.cs" />
+    <Compile Include="Abstract\Collections\IObservableGrouping.cs" />
     <Compile Include="Abstract\Collections\IObservableList.cs" />
+    <Compile Include="Abstract\Collections\IObservableLookup.cs" />
     <Compile Include="Abstract\Collections\IObservableReadOnlyList.cs" />
     <Compile Include="Abstract\Collections\IObservableReadOnlyCollection.cs" />
     <Compile Include="Abstract\Collections\IObservableCollection.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="Extensions\InternalExtensions.cs" />
     <Compile Include="Implementation\Collections\ObservableList.cs" />
     <Compile Include="Implementation\Collections\ObservableCollection.cs" />
+    <Compile Include="Implementation\Operations\CollectionGroupByOperation.cs" />
     <Compile Include="Implementation\Operations\CollectionSelectManyOperation.cs" />
     <Compile Include="Implementation\Operations\CollectionSelectOperation.cs" />
     <Compile Include="Implementation\Operations\CollectionSortOperation.cs" />

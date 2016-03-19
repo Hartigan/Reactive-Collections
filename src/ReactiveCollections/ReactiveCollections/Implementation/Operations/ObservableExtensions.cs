@@ -98,6 +98,18 @@ namespace ReactiveCollections.Implementation.Operations
 		}
 
 		[NotNull]
+		public static IObservableReadOnlyCollection<IObservableGrouping<TKey, TValue>> GroupByRc<TKey, TValue>(
+			[NotNull] this IObservableReadOnlyCollection<TValue> source,
+			[NotNull] Func<TValue, TKey> keySelector,
+			[NotNull] Func<TValue, IObservable<TValue>> keyUpdaterSelector)
+		{
+			return new CollectionGroupByOperation<TKey, TValue>(
+				SourceWithInitialization(source),
+				keySelector,
+				keyUpdaterSelector);
+		}
+
+		[NotNull]
 		private static IObservable<IUpdateListQuery<T>> SourceWithInitialization<T>(
 			[NotNull] IObservableReadOnlyList<T> source)
 		{
