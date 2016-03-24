@@ -9,6 +9,7 @@ using FsCheck.Experimental;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using ReactiveCollections.Abstract.Collections;
+using ReactiveCollections.Implementation;
 using ReactiveCollections.Implementation.Collections;
 using ReactiveCollections.Implementation.Operations;
 

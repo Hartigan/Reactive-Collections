@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using ReactiveCollections.Abstract.Collections;
 using ReactiveCollections.Domain;
+using ReactiveCollections.Implementation;
 using ReactiveCollections.Implementation.Collections;
 using ReactiveCollections.Implementation.Operations;
 

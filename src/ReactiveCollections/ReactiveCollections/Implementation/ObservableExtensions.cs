@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Reactive;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using JetBrains.Annotations;
 using ReactiveCollections.Abstract.Collections;
-using ReactiveCollections.Implementation.Transactions;
-using System.Collections.Generic;
 using ReactiveCollections.Abstract.Transactions;
 using ReactiveCollections.Domain;
+using ReactiveCollections.Implementation.Operations;
+using ReactiveCollections.Implementation.Threading;
+using ReactiveCollections.Implementation.Transactions;
 
-namespace ReactiveCollections.Implementation.Operations
+namespace ReactiveCollections.Implementation
 {
 	public static class ObservableExtensions
 	{
@@ -125,6 +127,30 @@ namespace ReactiveCollections.Implementation.Operations
 			return source.CollectionChanged.StartWith(UpdateListQuery<T>.OnReset(
 				oldItems: Array.Empty<T>(),
 				newItems: source.ToList()));
+		}
+
+		[NotNull]
+		private static IDisposable BindToList<T>(
+			[NotNull] IObservableReadOnlyList<T> source,
+			[NotNull] IList<T> target,
+			[NotNull] IScheduler scheduler)
+		{
+			return new DispatcherToList<T>(
+				SourceWithInitialization(source),
+				target,
+				scheduler);
+		}
+
+		[NotNull]
+		private static IDisposable BindToCollection<T>(
+			[NotNull] IObservableReadOnlyCollection<T> source,
+			[NotNull] ICollection<T> target,
+			[NotNull] IScheduler scheduler)
+		{
+			return new DispatcherToCollection<T>(
+				SourceWithInitialization(source),
+				target,
+				scheduler);
 		}
 	}
 }
