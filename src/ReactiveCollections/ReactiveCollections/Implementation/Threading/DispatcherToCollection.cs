@@ -4,20 +4,17 @@ using System.Reactive.Concurrency;
 using JetBrains.Annotations;
 using ReactiveCollections.Abstract.Transactions;
 using ReactiveCollections.Abstract.Transactions.Arguments;
-using ReactiveCollections.Extensions;
+using ReactiveCollections.Implementation.Functions;
 
 namespace ReactiveCollections.Implementation.Threading
 {
-	public class DispatcherToCollection<T> : IDisposable
+	public sealed class DispatcherToCollection<T> : CollectionFunctionBase<T>
 	{
 		[NotNull]
 		private readonly ICollection<T> _target;
 
 		[NotNull]
 		private readonly IScheduler _sheduler;
-
-		[NotNull]
-		private readonly IDisposable _sub;
 
 		public DispatcherToCollection(
 			[NotNull] IObservable<IUpdateCollectionQuery<T>> source,
@@ -26,55 +23,49 @@ namespace ReactiveCollections.Implementation.Threading
 		{
 			_target = target;
 			_sheduler = sheduler;
-			_sub = source.WeakSubscribe(ProcessQuery);
+			Subscibe(source);
 		}
 
-		private void ProcessQuery([NotNull] IUpdateCollectionQuery<T> query)
+		protected override void OnEmpty(ICollectionOnEmptyArgs<T> arg)
+		{
+		}
+
+		protected override void OnReset(ICollectionOnResetArgs<T> arg)
 		{
 			_sheduler.Schedule(() =>
 			{
-				query.Match(
-					onInsert: OnInsert,
-					onRemove: OnRemove,
-					onReplace: OnReplace,
-					onReset: OnReset,
-					onEmpty: OnEmpty);
+				_target.Clear();
+
+				foreach (var newItem in arg.NewItems)
+				{
+					_target.Add(newItem);
+				}
 			});
 		}
 
-		private void OnEmpty([NotNull] ICollectionOnEmptyArgs<T> arg)
+		protected override void OnReplace(ICollectionOnReplaceArgs<T> arg)
 		{
-		}
-
-		private void OnReset([NotNull] ICollectionOnResetArgs<T> arg)
-		{
-			_target.Clear();
-
-			foreach (var newItem in arg.NewItems)
+			_sheduler.Schedule(() =>
 			{
-				_target.Add(newItem);
-			}
+				_target.Remove(arg.OldItem);
+				_target.Add(arg.NewItem);
+			});
 		}
 
-		private void OnReplace([NotNull] ICollectionOnReplaceArgs<T> arg)
+		protected override void OnRemove(ICollectionOnRemoveArgs<T> arg)
 		{
-			_target.Remove(arg.OldItem);
-			_target.Add(arg.NewItem);
+			_sheduler.Schedule(() =>
+			{
+				_target.Remove(arg.Item);
+			});
 		}
 
-		private void OnRemove([NotNull] ICollectionOnRemoveArgs<T> arg)
+		protected override void OnInsert(ICollectionOnInsertArgs<T> arg)
 		{
-			_target.Remove(arg.Item);
-		}
-
-		private void OnInsert([NotNull] ICollectionOnInsertArgs<T> arg)
-		{
-			_target.Add(arg.Item);
-		}
-
-		public void Dispose()
-		{
-			_sub.Dispose();
+			_sheduler.Schedule(() =>
+			{
+				_target.Add(arg.Item);
+			});
 		}
 	}
 }

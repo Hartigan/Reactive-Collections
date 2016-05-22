@@ -4,20 +4,17 @@ using System.Reactive.Concurrency;
 using JetBrains.Annotations;
 using ReactiveCollections.Abstract.Transactions;
 using ReactiveCollections.Abstract.Transactions.Arguments;
-using ReactiveCollections.Extensions;
+using ReactiveCollections.Implementation.Functions;
 
 namespace ReactiveCollections.Implementation.Threading
 {
-	public sealed class DispatcherToList<T> : IDisposable
+	public sealed class DispatcherToList<T> : ListFunctionBase<T>
 	{
 		[NotNull]
 		private readonly IList<T> _target;
 
 		[NotNull]
 		private readonly IScheduler _sheduler;
-
-		[NotNull]
-		private readonly IDisposable _sub;
 
 		public DispatcherToList(
 			[NotNull] IObservable<IUpdateListQuery<T>> source,
@@ -26,61 +23,57 @@ namespace ReactiveCollections.Implementation.Threading
 		{
 			_target = target;
 			_sheduler = sheduler;
-			_sub = source.WeakSubscribe(ProcessQuery);
+			Subscibe(source);
 		}
 
-		private void ProcessQuery([NotNull] IUpdateListQuery<T> query)
+		protected override void OnEmpty(IListOnEmptyArgs<T> arg)
+		{
+		}
+
+		protected override void OnReset(IListOnResetArgs<T> arg)
 		{
 			_sheduler.Schedule(() =>
 			{
-				query.Match(
-					onInsert: OnInsert,
-					onRemove: OnRemove,
-					onReplace: OnReplace,
-					onMove: OnMove,
-					onReset: OnReset,
-					onEmpty: OnEmpty);
+				_target.Clear();
+
+				foreach (var newItem in arg.NewItems)
+				{
+					_target.Add(newItem);
+				}
 			});
 		}
 
-		private void OnEmpty([NotNull] IListOnEmptyArgs<T> arg)
+		protected override void OnMove(IListOnMoveArgs<T> arg)
 		{
-		}
-
-		private void OnReset([NotNull] IListOnResetArgs<T> arg)
-		{
-			_target.Clear();
-
-			foreach (var newItem in arg.NewItems)
+			_sheduler.Schedule(() =>
 			{
-				_target.Add(newItem);
-			}
+				_target.RemoveAt(arg.OldIndex);
+				_target.Insert(arg.NewIndex, arg.Item);
+			});
 		}
 
-		private void OnMove([NotNull] IListOnMoveArgs<T> arg)
+		protected override void OnReplace(IListOnReplaceArgs<T> arg)
 		{
-			_target.RemoveAt(arg.OldIndex);
-			_target.Insert(arg.NewIndex, arg.Item);
+			_sheduler.Schedule(() =>
+			{
+				_target[arg.Index] = arg.NewItem;
+			});
 		}
 
-		private void OnReplace([NotNull] IListOnReplaceArgs<T> arg)
+		protected override void OnRemove(IListOnRemoveArgs<T> arg)
 		{
-			_target[arg.Index] = arg.NewItem;
+			_sheduler.Schedule(() =>
+			{
+				_target.RemoveAt(arg.Index);
+			});
 		}
 
-		private void OnRemove([NotNull] IListOnRemoveArgs<T> arg)
+		protected override void OnInsert(IListOnInsertArgs<T> arg)
 		{
-			_target.RemoveAt(arg.Index);
-		}
-
-		private void OnInsert([NotNull] IListOnInsertArgs<T> arg)
-		{
-			_target.Insert(arg.Index, arg.Item);
-		}
-
-		public void Dispose()
-		{
-			_sub.Dispose();
+			_sheduler.Schedule(() =>
+			{
+				_target.Insert(arg.Index, arg.Item);
+			});
 		}
 	}
 }

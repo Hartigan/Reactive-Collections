@@ -67,6 +67,8 @@
     <Compile Include="Extensions\InternalExtensions.cs" />
     <Compile Include="Implementation\Collections\ObservableList.cs" />
     <Compile Include="Implementation\Collections\ObservableCollection.cs" />
+    <Compile Include="Implementation\Functions\CollectionFunctionBase.cs" />
+    <Compile Include="Implementation\Functions\ListFunctionBase.cs" />
     <Compile Include="Implementation\Operations\CollectionGroupByOperation.cs" />
     <Compile Include="Implementation\Operations\CollectionSelectManyOperation.cs" />
     <Compile Include="Implementation\Operations\CollectionSelectOperation.cs" />
