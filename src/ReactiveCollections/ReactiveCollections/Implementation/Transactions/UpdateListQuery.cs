@@ -177,11 +177,9 @@ namespace ReactiveCollections.Implementation.Transactions
 				onInsert(this);
 			}
 
-			T IListOnInsertArgs<T>.Item => _item;
-
 			public int Index => _index;
 
-			T ICollectionOnInsertArgs<T>.Item => _item;
+			public T Item => _item;
 		}
 
 		private sealed class OnMoveArgs : UpdateListQuery<T>, IListOnMoveArgs<T>, ICollectionOnEmptyArgs<T>
@@ -255,11 +253,9 @@ namespace ReactiveCollections.Implementation.Transactions
 			private readonly T _item;
 			private readonly int _index;
 
-			T IListOnRemoveArgs<T>.Item => _item;
+			public T Item => _item;
 
 			public int Index => _index;
-
-			T ICollectionOnRemoveArgs<T>.Item => _item;
 
 			public OnRemoveArgs(T item, int index)
 			{
@@ -320,15 +316,11 @@ namespace ReactiveCollections.Implementation.Transactions
 			private readonly T _newItem;
 			private readonly int _index;
 
-			T IListOnReplaceArgs<T>.OldItem => _oldItem;
+			public T OldItem => _oldItem;
 
-			T IListOnReplaceArgs<T>.NewItem => _newItem;
+			public T NewItem => _newItem;
 
 			public int Index => _index;
-
-			T ICollectionOnReplaceArgs<T>.OldItem => _oldItem;
-
-			T ICollectionOnReplaceArgs<T>.NewItem => _newItem;
 
 			public OnReplaceArgs(T oldItem, T newItem, int index)
 			{

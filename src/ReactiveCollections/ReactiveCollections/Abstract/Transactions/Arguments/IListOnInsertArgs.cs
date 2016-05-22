@@ -1,8 +1,7 @@
 ﻿namespace ReactiveCollections.Abstract.Transactions.Arguments
 {
-	public interface IListOnInsertArgs<out T> : IUpdateListQuery<T>
+	public interface IListOnInsertArgs<out T> : IUpdateListQuery<T>, ICollectionOnInsertArgs<T>
 	{
-		T Item { get; }
 		int Index { get; }
 	}
 }

@@ -1,9 +1,7 @@
 ﻿namespace ReactiveCollections.Abstract.Transactions.Arguments
 {
-	public interface IListOnReplaceArgs<out T> : IUpdateListQuery<T>
+	public interface IListOnReplaceArgs<out T> : IUpdateListQuery<T>, ICollectionOnReplaceArgs<T>
 	{
-		T OldItem { get; }
-		T NewItem { get; }
 		int Index { get; }
 	}
 }
