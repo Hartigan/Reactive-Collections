@@ -1,6 +1,6 @@
 ﻿namespace ReactiveCollections.Abstract.Transactions.Arguments
 {
-	public interface ICollectionOnEmptyArgs
+	public interface ICollectionOnEmptyArgs<out T> : IUpdateCollectionQuery<T>
 	{
 	}
 }

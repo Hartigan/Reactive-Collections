@@ -12,7 +12,7 @@ namespace ReactiveCollections.Abstract.Transactions
 			[NotNull] Func<IListOnReplaceArgs<T>, TResult> onReplace,
 			[NotNull] Func<IListOnMoveArgs<T>, TResult> onMove,
 			[NotNull] Func<IListOnResetArgs<T>, TResult> onReset,
-			[NotNull] Func<IListOnEmptyArgs, TResult> onEmpty);
+			[NotNull] Func<IListOnEmptyArgs<T>, TResult> onEmpty);
 
 		void Match(
 			[NotNull] Action<IListOnInsertArgs<T>> onInsert,
@@ -20,6 +20,6 @@ namespace ReactiveCollections.Abstract.Transactions
 			[NotNull] Action<IListOnReplaceArgs<T>> onReplace,
 			[NotNull] Action<IListOnMoveArgs<T>> onMove,
 			[NotNull] Action<IListOnResetArgs<T>> onReset,
-			[NotNull] Action<IListOnEmptyArgs> onEmpty);
+			[NotNull] Action<IListOnEmptyArgs<T>> onEmpty);
 	}
 }

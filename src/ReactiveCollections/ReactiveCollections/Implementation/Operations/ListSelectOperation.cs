@@ -81,7 +81,7 @@ namespace ReactiveCollections.Implementation.Operations
 
 		public override TOut this[int index] => _data[index].Value;
 
-		protected override IEnumerable<IUpdateListQuery<TOut>> OnEmpty(IListOnEmptyArgs arg)
+		protected override IEnumerable<IUpdateListQuery<TOut>> OnEmpty(IListOnEmptyArgs<TIn> arg)
 		{
 			return Enumerable.Empty<IUpdateListQuery<TOut>>();
 		}

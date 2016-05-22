@@ -1,6 +1,6 @@
 ﻿namespace ReactiveCollections.Abstract.Transactions.Arguments
 {
-	public interface IListOnMoveArgs<out T>
+	public interface IListOnMoveArgs<out T> : IUpdateListQuery<T>
 	{
 		T Item { get; }
 		int OldIndex { get; }

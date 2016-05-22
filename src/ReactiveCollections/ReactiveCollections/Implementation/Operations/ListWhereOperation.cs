@@ -186,7 +186,7 @@ namespace ReactiveCollections.Implementation.Operations
 			}
 		}
 
-		protected override IEnumerable<IUpdateListQuery<T>> OnEmpty(IListOnEmptyArgs arg)
+		protected override IEnumerable<IUpdateListQuery<T>> OnEmpty(IListOnEmptyArgs<T> arg)
 		{
 			return Enumerable.Empty<IUpdateListQuery<T>>();
 		}

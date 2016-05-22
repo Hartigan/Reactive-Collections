@@ -43,7 +43,7 @@ namespace ReactiveCollections.Implementation.Threading
 			});
 		}
 
-		private void OnEmpty([NotNull] IListOnEmptyArgs arg)
+		private void OnEmpty([NotNull] IListOnEmptyArgs<T> arg)
 		{
 		}
 

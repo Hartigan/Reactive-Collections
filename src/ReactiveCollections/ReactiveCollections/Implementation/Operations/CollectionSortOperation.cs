@@ -132,7 +132,7 @@ namespace ReactiveCollections.Implementation.Operations
 
 		public override TValue this[int index] => _list[index].Value;
 
-		protected override IEnumerable<IUpdateListQuery<TValue>> OnEmpty(ICollectionOnEmptyArgs arg)
+		protected override IEnumerable<IUpdateListQuery<TValue>> OnEmpty(ICollectionOnEmptyArgs<TValue> arg)
 		{
 			return Enumerable.Empty<IUpdateListQuery<TValue>>();
 		}

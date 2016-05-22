@@ -50,7 +50,7 @@ namespace ReactiveCollections.Implementation.Operations
 		}
 
 		[NotNull, ItemNotNull]
-		protected abstract IEnumerable<IUpdateCollectionQuery<TOut>> OnEmpty([NotNull] ICollectionOnEmptyArgs arg);
+		protected abstract IEnumerable<IUpdateCollectionQuery<TOut>> OnEmpty([NotNull] ICollectionOnEmptyArgs<TIn> arg);
 
 		[NotNull, ItemNotNull]
 		protected abstract IEnumerable<IUpdateCollectionQuery<TOut>> OnReset([NotNull] ICollectionOnResetArgs<TIn> arg);

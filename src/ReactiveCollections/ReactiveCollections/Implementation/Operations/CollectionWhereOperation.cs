@@ -119,7 +119,7 @@ namespace ReactiveCollections.Implementation.Operations
 
 		public override int Count => _data.Count(x => x.Value);
 
-		protected override IEnumerable<IUpdateCollectionQuery<T>> OnEmpty(ICollectionOnEmptyArgs arg)
+		protected override IEnumerable<IUpdateCollectionQuery<T>> OnEmpty(ICollectionOnEmptyArgs<T> arg)
 		{
 			return Enumerable.Empty<IUpdateCollectionQuery<T>>();
 		}

@@ -31,7 +31,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
 				Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
 				Func<ICollectionOnResetArgs<T>, TResult> onReset,
-				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
+				Func<ICollectionOnEmptyArgs<T>, TResult> onEmpty)
 			{
 				onReset.ArgumentNotNull(nameof(onReset));
 				return onReset(this);
@@ -42,7 +42,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnRemoveArgs<T>> onRemove,
 				Action<ICollectionOnReplaceArgs<T>> onReplace,
 				Action<ICollectionOnResetArgs<T>> onReset,
-				Action<ICollectionOnEmptyArgs> onEmpty)
+				Action<ICollectionOnEmptyArgs<T>> onEmpty)
 			{
 				onReset.ArgumentNotNull(nameof(onReset));
 				onReset(this);
@@ -53,14 +53,14 @@ namespace ReactiveCollections.Implementation.Transactions
 			public IReadOnlyList<T> NewItems => _newItems;
 		}
 
-		private sealed class OnEmptyArgs : UpdateCollectionQuery<T>, ICollectionOnEmptyArgs
+		private sealed class OnEmptyArgs : UpdateCollectionQuery<T>, ICollectionOnEmptyArgs<T>
 		{
 			public override TResult Match<TResult>(
 				Func<ICollectionOnInsertArgs<T>, TResult> onInsert,
 				Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
 				Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
 				Func<ICollectionOnResetArgs<T>, TResult> onReset,
-				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
+				Func<ICollectionOnEmptyArgs<T>, TResult> onEmpty)
 			{
 				onEmpty.ArgumentNotNull(nameof(onEmpty));
 				return onEmpty(this);
@@ -71,7 +71,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnRemoveArgs<T>> onRemove,
 				Action<ICollectionOnReplaceArgs<T>> onReplace,
 				Action<ICollectionOnResetArgs<T>> onReset,
-				Action<ICollectionOnEmptyArgs> onEmpty)
+				Action<ICollectionOnEmptyArgs<T>> onEmpty)
 			{
 				onEmpty.ArgumentNotNull(nameof(onEmpty));
 				onEmpty(this);
@@ -92,7 +92,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
 				Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
 				Func<ICollectionOnResetArgs<T>, TResult> onReset,
-				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
+				Func<ICollectionOnEmptyArgs<T>, TResult> onEmpty)
 			{
 				onInsert.ArgumentNotNull(nameof(onInsert));
 				return onInsert(this);
@@ -103,7 +103,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnRemoveArgs<T>> onRemove,
 				Action<ICollectionOnReplaceArgs<T>> onReplace,
 				Action<ICollectionOnResetArgs<T>> onReset,
-				Action<ICollectionOnEmptyArgs> onEmpty)
+				Action<ICollectionOnEmptyArgs<T>> onEmpty)
 			{
 				onInsert.ArgumentNotNull(nameof(onInsert));
 				onInsert(this);
@@ -126,7 +126,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
 				Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
 				Func<ICollectionOnResetArgs<T>, TResult> onReset,
-				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
+				Func<ICollectionOnEmptyArgs<T>, TResult> onEmpty)
 			{
 				onRemove.ArgumentNotNull(nameof(onRemove));
 				return onRemove(this);
@@ -137,7 +137,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnRemoveArgs<T>> onRemove,
 				Action<ICollectionOnReplaceArgs<T>> onReplace,
 				Action<ICollectionOnResetArgs<T>> onReset,
-				Action<ICollectionOnEmptyArgs> onEmpty)
+				Action<ICollectionOnEmptyArgs<T>> onEmpty)
 			{
 				onRemove.ArgumentNotNull(nameof(onRemove));
 				onRemove(this);
@@ -166,7 +166,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
 				Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
 				Func<ICollectionOnResetArgs<T>, TResult> onReset,
-				Func<ICollectionOnEmptyArgs, TResult> onEmpty)
+				Func<ICollectionOnEmptyArgs<T>, TResult> onEmpty)
 			{
 				onReplace.ArgumentNotNull(nameof(onReplace));
 				return onReplace(this);
@@ -177,7 +177,7 @@ namespace ReactiveCollections.Implementation.Transactions
 				Action<ICollectionOnRemoveArgs<T>> onRemove,
 				Action<ICollectionOnReplaceArgs<T>> onReplace,
 				Action<ICollectionOnResetArgs<T>> onReset,
-				Action<ICollectionOnEmptyArgs> onEmpty)
+				Action<ICollectionOnEmptyArgs<T>> onEmpty)
 			{
 				onReplace.ArgumentNotNull(nameof(onReplace));
 				onReplace(this);
@@ -219,13 +219,13 @@ namespace ReactiveCollections.Implementation.Transactions
 			Func<ICollectionOnRemoveArgs<T>, TResult> onRemove,
 			Func<ICollectionOnReplaceArgs<T>, TResult> onReplace,
 			Func<ICollectionOnResetArgs<T>, TResult> onReset,
-			Func<ICollectionOnEmptyArgs, TResult> onEmpty);
+			Func<ICollectionOnEmptyArgs<T>, TResult> onEmpty);
 
 		public abstract void Match(
 			Action<ICollectionOnInsertArgs<T>> onInsert,
 			Action<ICollectionOnRemoveArgs<T>> onRemove,
 			Action<ICollectionOnReplaceArgs<T>> onReplace,
 			Action<ICollectionOnResetArgs<T>> onReset,
-			Action<ICollectionOnEmptyArgs> onEmpty);
+			Action<ICollectionOnEmptyArgs<T>> onEmpty);
 	}
 }

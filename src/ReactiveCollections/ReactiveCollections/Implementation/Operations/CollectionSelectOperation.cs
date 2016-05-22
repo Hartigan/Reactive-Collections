@@ -97,7 +97,7 @@ namespace ReactiveCollections.Implementation.Operations
 
 		public override int Count => _count;
 
-		protected override IEnumerable<IUpdateCollectionQuery<TOut>> OnEmpty(ICollectionOnEmptyArgs arg)
+		protected override IEnumerable<IUpdateCollectionQuery<TOut>> OnEmpty(ICollectionOnEmptyArgs<TIn> arg)
 		{
 			return Enumerable.Empty<IUpdateCollectionQuery<TOut>>();
 		}

@@ -141,7 +141,7 @@ namespace ReactiveCollections.Implementation.Operations
 
 		public override T this[int index] => _data[_skip + index];
 
-		protected override IEnumerable<IUpdateListQuery<T>> OnEmpty(IListOnEmptyArgs arg)
+		protected override IEnumerable<IUpdateListQuery<T>> OnEmpty(IListOnEmptyArgs<T> arg)
 		{
 			return Enumerable.Empty<IUpdateListQuery<T>>();
 		}

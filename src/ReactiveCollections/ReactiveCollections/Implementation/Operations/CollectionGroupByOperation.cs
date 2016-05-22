@@ -126,7 +126,7 @@ namespace ReactiveCollections.Implementation.Operations
 
 		public override int Count => _data.Count;
 
-		protected override IEnumerable<IUpdateCollectionQuery<IObservableGrouping<TKey, TValue>>> OnEmpty(ICollectionOnEmptyArgs arg)
+		protected override IEnumerable<IUpdateCollectionQuery<IObservableGrouping<TKey, TValue>>> OnEmpty(ICollectionOnEmptyArgs<TValue> arg)
 		{
 			return Enumerable.Empty<IUpdateCollectionQuery<IObservableGrouping<TKey, TValue>>>();
 		}
