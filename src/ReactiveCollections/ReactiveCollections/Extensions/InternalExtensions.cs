@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using JetBrains.Annotations;
+using ReactiveCollections.Abstract.Collections;
+using ReactiveCollections.Abstract.Transactions;
+using ReactiveCollections.Implementation.Transactions;
 
 namespace ReactiveCollections.Extensions
 {
@@ -33,6 +37,24 @@ namespace ReactiveCollections.Extensions
 				});
 			});
 			return result;
+		}
+
+		[NotNull]
+		public static IObservable<IUpdateListQuery<T>> SourceWithInitialization<T>(
+			[NotNull] this IObservableReadOnlyList<T> source)
+		{
+			return source.ListChanged.StartWith(UpdateListQuery<T>.OnReset(
+				oldItems: Array.Empty<T>(),
+				newItems: source.ToList()));
+		}
+
+		[NotNull]
+		public static IObservable<IUpdateCollectionQuery<T>> SourceWithInitialization<T>(
+			[NotNull] this IObservableReadOnlyCollection<T> source)
+		{
+			return source.CollectionChanged.StartWith(UpdateListQuery<T>.OnReset(
+				oldItems: Array.Empty<T>(),
+				newItems: source.ToList()));
 		}
 	}
 }

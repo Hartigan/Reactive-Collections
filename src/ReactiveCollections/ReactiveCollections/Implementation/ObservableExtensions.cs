@@ -7,6 +7,8 @@ using JetBrains.Annotations;
 using ReactiveCollections.Abstract.Collections;
 using ReactiveCollections.Abstract.Transactions;
 using ReactiveCollections.Domain;
+using ReactiveCollections.Extensions;
+using ReactiveCollections.Implementation.Functions;
 using ReactiveCollections.Implementation.Operations;
 using ReactiveCollections.Implementation.Threading;
 using ReactiveCollections.Implementation.Transactions;
@@ -22,7 +24,7 @@ namespace ReactiveCollections.Implementation
 			[NotNull] Func<TIn, IObservable<TIn>> updaterSelector)
 		{
 			return new CollectionSelectOperation<TIn,TOut>(
-				SourceWithInitialization(source),
+				source.SourceWithInitialization(),
 				selector,
 				updaterSelector);
 		}
@@ -34,7 +36,7 @@ namespace ReactiveCollections.Implementation
 			[NotNull] Func<TIn, IObservable<TIn>> updaterSelector)
 		{
 			return new ListSelectOperation<TIn, TOut>(
-				SourceWithInitialization(source),
+				source.SourceWithInitialization(),
 				selector,
 				updaterSelector);
 		}
@@ -46,7 +48,7 @@ namespace ReactiveCollections.Implementation
 			[NotNull] Func<T, IObservable<T>> observableExtractor)
 		{
 			return new CollectionWhereOperation<T>(
-				SourceWithInitialization(source),
+				source.SourceWithInitialization(),
 				filter,
 				observableExtractor);
 		}
@@ -58,7 +60,7 @@ namespace ReactiveCollections.Implementation
 			[NotNull] Func<T, IObservable<T>> observableExtractor)
 		{
 			return new ListWhereOperation<T>(
-				SourceWithInitialization(source),
+				source.SourceWithInitialization(),
 				filter,
 				observableExtractor);
 		}
@@ -69,7 +71,7 @@ namespace ReactiveCollections.Implementation
 			[NotNull] Func<TIn, IObservableReadOnlyCollection<TOut>> selector)
 		{
 			return new CollectionSelectManyOperation<TIn,TOut>(
-				SourceWithInitialization(source),
+				source.SourceWithInitialization(),
 				selector);
 		}
 
@@ -81,7 +83,7 @@ namespace ReactiveCollections.Implementation
 			[NotNull] Func<TValue, IObservable<TValue>> keyUpdater)
 		{
 			return new CollectionSortOperation<TValue, TKey>(
-				SourceWithInitialization(source),
+				source.SourceWithInitialization(),
 				selector,
 				comparer,
 				keyUpdater);
@@ -94,7 +96,7 @@ namespace ReactiveCollections.Implementation
 			[NotNull] ObservableValue<int> take)
 		{
 			return new ListSkipAndTakeOperation<T>(
-				SourceWithInitialization(source),
+				source.SourceWithInitialization(),
 				skip,
 				take);
 		}
@@ -105,52 +107,112 @@ namespace ReactiveCollections.Implementation
 			[NotNull] Func<TValue, TKey> keySelector,
 			[NotNull] Func<TValue, IObservable<TValue>> keyUpdaterSelector)
 		{
-			return new CollectionGroupByOperation<TKey, TValue>(
-				SourceWithInitialization(source),
+			return source.GroupByRc(
 				keySelector,
+				EqualityComparer<TKey>.Default,
 				keyUpdaterSelector);
 		}
 
 		[NotNull]
-		private static IObservable<IUpdateListQuery<T>> SourceWithInitialization<T>(
-			[NotNull] IObservableReadOnlyList<T> source)
+		public static IObservableLookup<TKey, TValue> GroupByRc<TKey, TValue>(
+			[NotNull] this IObservableReadOnlyCollection<TValue> source,
+			[NotNull] Func<TValue, TKey> keySelector,
+			[NotNull] IEqualityComparer<TKey> keyComparer,
+			[NotNull] Func<TValue, IObservable<TValue>> keyUpdaterSelector)
 		{
-			return source.ListChanged.StartWith(UpdateListQuery<T>.OnReset(
-				oldItems: Array.Empty<T>(),
-				newItems: source.ToList()));
+			return new CollectionGroupByOperation<TKey, TValue>(
+				source.SourceWithInitialization(),
+				keySelector,
+				keyComparer,
+				keyUpdaterSelector);
 		}
 
 		[NotNull]
-		private static IObservable<IUpdateCollectionQuery<T>> SourceWithInitialization<T>(
-			[NotNull] IObservableReadOnlyCollection<T> source)
+		public static IObservableReadOnlyCollection<TValue> DistinctRc<TKey, TValue>(
+			[NotNull] this IObservableReadOnlyCollection<TValue> source,
+			[NotNull] Func<TValue, TKey> keySelector,
+			[NotNull] Func<TValue, IObservable<TValue>> keyUpdaterSelector)
 		{
-			return source.CollectionChanged.StartWith(UpdateListQuery<T>.OnReset(
-				oldItems: Array.Empty<T>(),
-				newItems: source.ToList()));
+			return source.DistinctRc(
+				keySelector,
+				EqualityComparer<TKey>.Default,
+				keyUpdaterSelector);
 		}
 
 		[NotNull]
-		private static IDisposable BindToList<T>(
+		public static IObservableReadOnlyCollection<TValue> DistinctRc<TKey, TValue>(
+			[NotNull] this IObservableReadOnlyCollection<TValue> source,
+			[NotNull] Func<TValue, TKey> keySelector,
+			[NotNull] IEqualityComparer<TKey> keyComparer,
+			[NotNull] Func<TValue, IObservable<TValue>> keyUpdaterSelector)
+		{
+			return new CollectionDistinctOperation<TValue,TKey>(
+				source.SourceWithInitialization(),
+				keySelector,
+				keyComparer,
+				keyUpdaterSelector);
+		}
+
+		[NotNull]
+		public static IObservableReadOnlyCollection<TValue> UnionRc<TKey, TValue>(
+			[NotNull] this IObservableReadOnlyCollection<TValue> first,
+			[NotNull] IObservableReadOnlyCollection<TValue> second,
+			[NotNull] Func<TValue, TKey> keySelector,
+			[NotNull] Func<TValue, IObservable<TValue>> keyUpdaterSelector)
+		{
+			return first.UnionRc(
+				second,
+				keySelector,
+				EqualityComparer<TKey>.Default,
+				keyUpdaterSelector);
+		}
+
+		[NotNull]
+		public static IObservableReadOnlyCollection<TValue> UnionRc<TKey, TValue>(
+			[NotNull] this IObservableReadOnlyCollection<TValue> first,
+			[NotNull] IObservableReadOnlyCollection<TValue> second,
+			[NotNull] Func<TValue, TKey> keySelector,
+			[NotNull] IEqualityComparer<TKey> keyComparer,
+			[NotNull] Func<TValue, IObservable<TValue>> keyUpdaterSelector)
+		{
+			return new CollectionUnionOperation<TValue,TKey>(
+				first,
+				second,
+				keySelector,
+				keyComparer,
+				keyUpdaterSelector);
+		}
+
+		[NotNull]
+		public static IDisposable BindToList<T>(
 			[NotNull] IObservableReadOnlyList<T> source,
 			[NotNull] IList<T> target,
 			[NotNull] IScheduler scheduler)
 		{
 			return new DispatcherToList<T>(
-				SourceWithInitialization(source),
+				source.SourceWithInitialization(),
 				target,
 				scheduler);
 		}
 
 		[NotNull]
-		private static IDisposable BindToCollection<T>(
+		public static IDisposable BindToCollection<T>(
 			[NotNull] IObservableReadOnlyCollection<T> source,
 			[NotNull] ICollection<T> target,
 			[NotNull] IScheduler scheduler)
 		{
 			return new DispatcherToCollection<T>(
-				SourceWithInitialization(source),
+				source.SourceWithInitialization(),
 				target,
 				scheduler);
+		}
+
+		[NotNull]
+		public static IObservableValue<T> SomeItemOrDefault<T>(
+			[NotNull] this IObservableReadOnlyCollection<T> source)
+		{
+			return new SomeItemOrDefaultFunction<T>(
+				source.SourceWithInitialization());
 		}
 	}
 }

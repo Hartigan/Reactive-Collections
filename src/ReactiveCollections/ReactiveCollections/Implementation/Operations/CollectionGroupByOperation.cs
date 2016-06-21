@@ -77,28 +77,31 @@ namespace ReactiveCollections.Implementation.Operations
 		}
 
 		[NotNull] private readonly Func<TValue, TKey> _keySelector;
+		[NotNull] private readonly IEqualityComparer<TKey> _keyComparer;
 		[NotNull] private readonly Func<TValue, IObservable<TValue>> _keyUpdaterSelector;
 		[NotNull] private readonly Collection<ItemContainer> _containers = new Collection<ItemContainer>();
-		[NotNull] private Dictionary<TKey, ObservableCollectionWithKey> _map = new Dictionary<TKey, ObservableCollectionWithKey>();
-		[NotNull] private IObservableCollection<IObservableGrouping<TKey, TValue>> _data = new Collections.ObservableCollection<IObservableGrouping<TKey, TValue>>();
+		[NotNull] private readonly Dictionary<TKey, ObservableCollectionWithKey> _map;
+		[NotNull] private readonly IObservableCollection<IObservableGrouping<TKey, TValue>> _data = new Collections.ObservableCollection<IObservableGrouping<TKey, TValue>>();
 		[NotNull] private readonly IDisposable _sub;
 
 		public CollectionGroupByOperation(
 			[NotNull] IObservable<IUpdateCollectionQuery<TValue>> source,
 			[NotNull] Func<TValue, TKey> keySelector,
+			[NotNull] IEqualityComparer<TKey> keyComparer,
 			[NotNull] Func<TValue, IObservable<TValue>> keyUpdaterSelector)
 		{
 			_keySelector = keySelector;
+			_keyComparer = keyComparer;
 			_keyUpdaterSelector = keyUpdaterSelector;
 			_sub = _data.CollectionChanged.WeakSubscribe(RaiseCollectionChanged);
-
+			_map = new Dictionary<TKey, ObservableCollectionWithKey>(keyComparer);
 			Subscibe(source);
 		}
 
 		private void OnItemChanged([NotNull] ItemContainer itemContainer)
 		{
 			var newKey = _keySelector(itemContainer.Value);
-			if (EqualityComparer<TKey>.Default.Equals(newKey, itemContainer.Key)) return;
+			if (_keyComparer.Equals(newKey, itemContainer.Key)) return;
 
 			var oldKey = itemContainer.Key;
 
@@ -180,7 +183,7 @@ namespace ReactiveCollections.Implementation.Operations
 			_containers.Add(newContaiter);
 
 			
-			if (EqualityComparer<TKey>.Default.Equals(newContaiter.Key, oldContainer.Key))
+			if (_keyComparer.Equals(newContaiter.Key, oldContainer.Key))
 			{
 				newCollection.Replace(arg.OldItem, arg.NewItem);
 			}

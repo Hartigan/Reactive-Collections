@@ -61,7 +61,8 @@
     <Compile Include="Abstract\Transactions\ITransactional.cs" />
     <Compile Include="Abstract\Transactions\IUpdateListQuery.cs" />
     <Compile Include="Abstract\Transactions\IUpdateCollectionQuery.cs" />
-    <Compile Include="Domain\ObservableValue.cs" />
+    <Compile Include="Domain\IObservableValue.cs" />
+    <Compile Include="Implementation\ObservableValue.cs" />
     <Compile Include="Domain\ValueChangedArgs.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\InternalExtensions.cs" />
@@ -69,12 +70,15 @@
     <Compile Include="Implementation\Collections\ObservableCollection.cs" />
     <Compile Include="Implementation\Functions\CollectionFunctionBase.cs" />
     <Compile Include="Implementation\Functions\ListFunctionBase.cs" />
+    <Compile Include="Implementation\Functions\SomeItemOrDefaultFunction.cs" />
+    <Compile Include="Implementation\Operations\CollectionDistinctOperation.cs" />
     <Compile Include="Implementation\Operations\CollectionGroupByOperation.cs" />
     <Compile Include="Implementation\Operations\CollectionSelectManyOperation.cs" />
     <Compile Include="Implementation\Operations\CollectionSelectOperation.cs" />
     <Compile Include="Implementation\Operations\CollectionSortOperation.cs" />
     <Compile Include="Implementation\Operations\CollectionToCollectionOperationBase.cs" />
     <Compile Include="Implementation\Operations\CollectionToListOperationBase.cs" />
+    <Compile Include="Implementation\Operations\CollectionUnionOperation.cs" />
     <Compile Include="Implementation\Operations\CollectionWhereOperation.cs" />
     <Compile Include="Implementation\Operations\ListSelectOperation.cs" />
     <Compile Include="Implementation\Operations\ListSkipAndTakeOperation.cs" />

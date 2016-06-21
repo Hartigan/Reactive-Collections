@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Reactive.Subjects;
 using JetBrains.Annotations;
+using ReactiveCollections.Domain;
 
-namespace ReactiveCollections.Domain
+namespace ReactiveCollections.Implementation
 {
-	public class ObservableValue<T>
+	public class ObservableValue<T> : IObservableValue<T>
 	{
 		private T _value;
 
