@@ -214,5 +214,13 @@ namespace ReactiveCollections.Implementation
 			return new SomeItemOrDefaultFunction<T>(
 				source.SourceWithInitialization());
 		}
+
+		[NotNull]
+		public static IObservableValue<int> CountRc<T>(
+			[NotNull] this IObservableReadOnlyCollection<T> source)
+		{
+			return new CollectionCountFunction<T>(
+				source.SourceWithInitialization());
+		}
 	}
 }

@@ -62,6 +62,7 @@
     <Compile Include="Abstract\Transactions\IUpdateListQuery.cs" />
     <Compile Include="Abstract\Transactions\IUpdateCollectionQuery.cs" />
     <Compile Include="Domain\IObservableValue.cs" />
+    <Compile Include="Implementation\Functions\CollectionCountFunction.cs" />
     <Compile Include="Implementation\ObservableValue.cs" />
     <Compile Include="Domain\ValueChangedArgs.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
